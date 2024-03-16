@@ -10,14 +10,10 @@ import androidx.compose.material.ListItem
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import model.Sale
+
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -25,21 +21,11 @@ fun HomeScreen(
     title: String,
     itemClick: (route: String) -> Unit
 ) {
-    val viewModel = HomeViewModel()
-    val sales = remember { mutableStateListOf<Sale>() }
+    val viewModel = ViewModel().getVM()
+    val sales by viewModel.sales.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         viewModel.fetchData()
-    }
-
-    val coroutineScope = rememberCoroutineScope()
-
-    coroutineScope.launch {
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.sales.collect {
-                sales.apply { addAll(it) }
-            }
-        }
     }
 
     LazyColumn {
