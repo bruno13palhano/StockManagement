@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">StockManagement</string>
+    <string name="home_label">Home</string>
+    <string name="item_label">Item</string>
+</resources>
