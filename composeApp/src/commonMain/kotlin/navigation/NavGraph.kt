@@ -18,9 +18,9 @@ fun NavHost(
     val nav by remember { mutableStateOf(NavGraph(navController)) }
     navGraph(nav)
 
-    val a: String by navController.currentRoute().collectAsState(initial = "main")
+    val currentRoute by navController.currentRoute().collectAsState(initial = startDestination)
 
-    nav.navController.destinations.firstOrNull { it.route == a }?.content?.let { it() }
+    nav.navController.destinations.firstOrNull { it.route == currentRoute }?.content?.let { it() }
 }
 
 class NavGraph(val navController: NavController) {
@@ -29,24 +29,14 @@ class NavGraph(val navController: NavController) {
     }
 
     fun addDestination(startDestination: String, route: String) {
-//        navController.addDestination(Destination(route = route, content = {}))
-        if (!navController.navigationStack.contains(startDestination))
-            navController.navigationStack.addLast(startDestination)
+        navController.addDestination(startDestination = startDestination, route = route)
     }
-
-    fun getStack() = navController.navigationStack
-    fun getDestinations() = navController.destinations
 }
 
 inline fun NavGraph.composable(
     route: String,
     crossinline content: @Composable () -> Unit
-) {
-    addDestination(route = route, content = { content() })
-    if (navController.navigationStack.size == 1) {
-        navController.navigationStack.addLast(route)
-    }
-}
+) = addDestination(route = route, content = { content() })
 
 inline fun NavGraph.navigation(
     startDestination: String,
@@ -58,17 +48,22 @@ inline fun NavGraph.navigation(
 }
 
 class NavController {
-    var navigationStack = ArrayDeque<String>()
+    private var navigationStack = ArrayDeque<String>()
     var destinations = mutableListOf<Destination>()
+        private set
 
-    fun navigate(route: String) {
-        if (navigationStack.lastOrNull() != route)
-            navigationStack.addLast(route)
+    fun navigate(route: String, popUpInclusive: Boolean = false) {
+        if (popUpInclusive) {
+            while (navigationStack.lastOrNull() != route)
+                navigationStack.removeLastOrNull()
+
+        } else {
+            if (navigationStack.lastOrNull() != route)
+                navigationStack.addLast(route)
+        }
     }
 
-    fun navigateUp() {
-        navigationStack.removeLastOrNull()
-    }
+    fun navigateUp() = navigationStack.removeLastOrNull()
 
     fun addDestination(destination: Destination) {
         val routes = destinations.map { it.route }
@@ -77,12 +72,17 @@ class NavController {
             destinations.add(destination)
     }
 
+    fun addDestination(startDestination: String, route: String) {
+        if (!navigationStack.contains(startDestination) && navigationStack.isEmpty()) {
+            navigationStack.addLast(startDestination)
+            navigationStack.addLast(route)
+        }
+    }
+
     fun currentRoute(): Flow<String> {
         return flow {
             while (true) {
-                emit(
-                    navigationStack.last()
-                )
+                navigationStack.lastOrNull()?.let { emit(it) }
                 delay(175)
             }
         }
