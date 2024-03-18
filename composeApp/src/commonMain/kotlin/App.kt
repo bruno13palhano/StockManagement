@@ -12,13 +12,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import navigation.NavController
+import navigation.NavHost
+import navigation.composable
+import navigation.navigation
+import navigation.rememberNavController
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.stringResource
 import screens.HomeScreen
 import screens.ItemScreen
-import stockmanagement.composeapp.generated.resources.Res
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun App() {
     MaterialTheme {
@@ -32,17 +34,23 @@ fun App() {
                     modifier = Modifier.padding(it).fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    var screenState by remember { mutableStateOf<Screen>(Screen.Home) }
 
-                    when (screenState) {
-                        Screen.Home -> {
-                            HomeScreen(title = stringResource(Res.string.home_label)) {
-                                screenState = Screen.Item
+                    val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = "main"
+                    ) {
+                        navigation(startDestination = "main", route = "home") {
+                            composable(route = "home") {
+                                HomeScreen("home") {
+                                    navController.navigate(route = "item")
+                                }
                             }
-                        }
-                        Screen.Item -> {
-                            ItemScreen(title = stringResource(Res.string.item_label)) {
-                                screenState = Screen.Home
+                            composable(route = "item") {
+                                ItemScreen("item") {
+                                    navController.navigateUp()
+                                }
                             }
                         }
                     }
@@ -50,9 +58,4 @@ fun App() {
             }
         }
     }
-}
-
-sealed class Screen(val route: String) {
-    data object Home: Screen(route = "home")
-    data object Item: Screen(route = "item")
 }
