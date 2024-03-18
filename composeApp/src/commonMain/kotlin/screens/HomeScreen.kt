@@ -5,8 +5,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.ListItem
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -18,7 +24,8 @@ import androidx.compose.ui.Modifier
 @Composable
 fun HomeScreen(
     title: String,
-    itemClick: (route: String) -> Unit
+    onItemClick: (route: String) -> Unit,
+    onIconMenuClick: () -> Unit
 ) {
     val viewModel = ViewModel().getVM()
     val sales by viewModel.sales.collectAsState()
@@ -27,14 +34,30 @@ fun HomeScreen(
         viewModel.fetchData()
     }
 
-    LazyColumn {
-        items(items = sales.toList(), key = { sale -> sale.id }) { sale ->
-            ListItem(modifier = Modifier
-                .clickable {
-                    itemClick(sale.productName)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = title) },
+                navigationIcon = {
+                    IconButton(onClick = onIconMenuClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
                 }
-            ) {
-                Text(text = sale.productName)
+            )
+        }
+    ) {
+        LazyColumn {
+            items(items = sales.toList(), key = { sale -> sale.id }) { sale ->
+                ListItem(modifier = Modifier
+                    .clickable {
+                        onItemClick(sale.productName)
+                    }
+                ) {
+                    Text(text = "${sale.productName}, $title")
+                }
             }
         }
     }
