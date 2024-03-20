@@ -1,7 +1,7 @@
 package navigation
 
 class NavArgument internal constructor(type: NavType<Any>){
-    private val type: NavType<Any>
+    val type: NavType<Any>
 
     class Builder {
         private var type: NavType<Any>? = null
