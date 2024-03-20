@@ -2,4 +2,7 @@
     <string name="app_name">StockManagement</string>
     <string name="home_label">Home</string>
     <string name="item_label">Item</string>
+    <string name="navigate_back_label">Navigate back</string>
+    <string name="done_button_label">Done button</string>
+    <string name="add_button_label">Add button</string>
 </resources>
