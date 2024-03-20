@@ -1,4 +1,4 @@
-package screens
+package screens.sales
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ItemScreen(
+fun SaleScreen(
     title: String,
     onButtonClick: () -> Unit,
     onBackClick: () -> Unit

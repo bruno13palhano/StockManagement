@@ -1,4 +1,4 @@
-package screens
+package screens.home
 
 import ViewModel
 import androidx.compose.foundation.clickable
@@ -13,6 +13,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,7 +25,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun HomeScreen(
     title: String,
-    onItemClick: (route: String) -> Unit,
+    onItemClick: (id: Long) -> Unit,
     onIconMenuClick: () -> Unit
 ) {
     val viewModel = ViewModel().getVM()
@@ -41,7 +42,7 @@ fun HomeScreen(
                 navigationIcon = {
                     IconButton(onClick = onIconMenuClick) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            imageVector = Icons.Filled.Menu,
                             contentDescription = null
                         )
                     }
@@ -53,7 +54,7 @@ fun HomeScreen(
             items(items = sales.toList(), key = { sale -> sale.id }) { sale ->
                 ListItem(modifier = Modifier
                     .clickable {
-                        onItemClick(sale.productName)
+                        onItemClick(sale.id)
                     }
                 ) {
                     Text(text = "${sale.productName}, $title")

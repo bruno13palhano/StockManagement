@@ -1,8 +1,7 @@
 package data
 
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import model.Sale
 
 class SaleLocalData : Data {
@@ -44,20 +43,10 @@ class SaleLocalData : Data {
             }
         }
 
-        return flow {
-            while (true) {
-                emit(currentSale)
-                delay(1000)
-            }
-        }
+        return flowOf(currentSale)
     }
 
     override fun getAll(): Flow<List<Sale>> {
-        return flow {
-            while (true) {
-                emit(sales)
-                delay(1000)
-            }
-        }
+        return flowOf(sales)
     }
 }
