@@ -60,5 +60,7 @@ inline fun NavGraph.navigation(
 }
 
 @Composable
-fun rememberNavController() = remember { NavController() }
+fun rememberNavController() = remember {
+    NavController(NavBackStackEntry(ArrayDeque(), mutableListOf(), NavArgValues(hashMapOf())))
+}
 

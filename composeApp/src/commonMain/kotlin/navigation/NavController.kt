@@ -4,8 +4,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class NavController {
-    val navBackStackEntry = NavBackStackEntry(ArrayDeque(), mutableListOf(), hashMapOf())
+class NavController(val navBackStackEntry: NavBackStackEntry) {
 
     fun navigate(route: String, popUpInclusive: Boolean = false) {
         val params = route.split("/")
@@ -16,20 +15,21 @@ class NavController {
             .first { it.route == currentRoute }
 
         for (i in argumentsValues.indices) {
-            navBackStackEntry.argsValues[currentDestination.arguments[i].name] = argumentsValues[i]
+            navBackStackEntry.arguments.values[currentDestination.arguments[i].name] =
+                NamedNavArgument(argumentsValues[i], currentDestination.arguments[i].argument)
         }
 
         if (popUpInclusive) {
-            while (navBackStackEntry.navStack.lastOrNull() != currentRoute)
-                navBackStackEntry.navStack.removeLastOrNull()
+            while (navBackStackEntry.navigationStack.lastOrNull() != currentRoute)
+                navBackStackEntry.navigationStack.removeLastOrNull()
 
         } else {
-            if (navBackStackEntry.navStack.lastOrNull() != currentRoute)
-                navBackStackEntry.navStack.addLast(currentRoute)
+            if (navBackStackEntry.navigationStack.lastOrNull() != currentRoute)
+                navBackStackEntry.navigationStack.addLast(currentRoute)
         }
     }
 
-    fun navigateUp() { navBackStackEntry.navStack.removeLastOrNull() }
+    fun navigateUp() { navBackStackEntry.navigationStack.removeLastOrNull() }
 
     fun addDestination(destination: Destination) {
         val routes = navBackStackEntry.destinationsStack.map { it.route }
@@ -39,16 +39,16 @@ class NavController {
     }
 
     fun addDestination(startDestination: String, route: String) {
-        if (!navBackStackEntry.navStack.contains(startDestination) && navBackStackEntry.navStack.isEmpty()) {
-            navBackStackEntry.navStack.addLast(startDestination)
-            navBackStackEntry.navStack.addLast(route)
+        if (!navBackStackEntry.navigationStack.contains(startDestination) && navBackStackEntry.navigationStack.isEmpty()) {
+            navBackStackEntry.navigationStack.addLast(startDestination)
+            navBackStackEntry.navigationStack.addLast(route)
         }
     }
 
     fun currentRoute(): Flow<String> {
         return flow {
             while (true) {
-                navBackStackEntry.navStack.lastOrNull()?.let { emit(it) }
+                navBackStackEntry.navigationStack.lastOrNull()?.let { emit(it) }
                 delay(175)
             }
         }
