@@ -3,11 +3,12 @@ package navigation
 fun navArgument(
     name: String,
     builder: NavArgument.Builder.() -> Unit
-): NamedNavArgument {
-    val navArgument = NavArgument.Builder()
-    builder.invoke(navArgument)
+): NamedNavArgument = NamedNavArgument(name, NavArgument.Builder().apply(builder).build())
 
-    return NamedNavArgument(name)
+class NamedNavArgument internal constructor(
+    val name: String,
+    val argument: NavArgument
+) {
+    operator fun component1(): String = name
+    operator fun component2(): NavArgument = argument
 }
-
-class NamedNavArgument internal constructor(val name: String)
