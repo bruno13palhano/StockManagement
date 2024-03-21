@@ -1,5 +1,12 @@
 package navigation
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,8 +24,21 @@ fun NavHost(
 
     val currentRoute by navController.currentRoute().collectAsState(initial = startDestination)
 
-    nav.navController.navBackStackEntry.destinationsStack
-        .firstOrNull { it.route == currentRoute }?.content?.let { it() }
+
+    AnimatedContent(
+        targetState = currentRoute,
+        transitionSpec = {
+            (fadeIn(animationSpec = spring()) +
+                    scaleIn(
+                        initialScale = 0.98f,
+                        animationSpec = tween(durationMillis = 200, delayMillis = 90)
+                    )
+            ).togetherWith(fadeOut(animationSpec = spring()))
+        }
+    ) {
+        nav.navController.navBackStackEntry.destinationsStack
+            .firstOrNull { it.route == currentRoute }?.content?.let { it() }
+    }
 }
 
 class NavGraph(val navController: NavController) {
