@@ -5,9 +5,11 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
-}
+    id("app.cash.sqldelight") version "2.0.1"}
 
 kotlin {
+    val sqlDelightVersion = "2.0.1"
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -24,6 +26,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation("app.cash.sqldelight:android-driver:2.0.1")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -32,9 +35,12 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation("androidx.compose.material:material-icons-extended:1.6.3")
+            implementation("app.cash.sqldelight:sqlite-driver:2.0.1")
+            implementation("app.cash.sqldelight:coroutines-extensions:2.0.1")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation("app.cash.sqldelight:sqlite-driver:2.0.1")
         }
     }
 }
@@ -80,6 +86,14 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "com.bruno13palhano"
             packageVersion = "1.0.0"
+        }
+    }
+}
+
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("com.bruno13palhano")
         }
     }
 }
