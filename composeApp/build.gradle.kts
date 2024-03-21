@@ -31,6 +31,7 @@ kotlin {
             implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
+            implementation("androidx.compose.material:material-icons-extended:1.6.3")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
