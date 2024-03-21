@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">StockManagement</string>
     <string name="home_label">Home</string>
-    <string name="item_label">Item</string>
+    <string name="edit_sale_label">Edit Sale</string>
+    <string name="new_sale_label">New Sale</string>
+    <string name="product_name_label">Product name</string>
+    <string name="product_price_label">Product price</string>
+    <string name="enter_product_name_label">Enter product name</string>
+    <string name="enter_product_price_label">Enter product price</string>
     <string name="navigate_back_label">Navigate back</string>
     <string name="done_button_label">Done button</string>
     <string name="add_button_label">Add button</string>
