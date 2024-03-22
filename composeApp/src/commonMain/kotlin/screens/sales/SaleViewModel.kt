@@ -3,14 +3,14 @@ package screens.sales
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import data.SaleLocalData
 import data.SaleRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import model.Sale
 
 class SaleViewModel(
-    private val saleRepository: SaleRepository = SaleRepository(data = SaleLocalData())
+    private val saleRepository: SaleRepository
 ) {
     var productName by mutableStateOf("")
         private set
@@ -30,6 +30,16 @@ class SaleViewModel(
             saleRepository.getById(id = id).collect {
                 productName = it.productName
                 productPrice = it.productPrice.toString()
+            }
+        }
+    }
+
+    fun save(id: Long) {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (id == 0L) {
+                saleRepository.insert(Sale(id = 0L, productName, productPrice.toFloat()))
+            } else {
+                saleRepository.update(Sale(id, productName, productPrice.toFloat()))
             }
         }
     }
