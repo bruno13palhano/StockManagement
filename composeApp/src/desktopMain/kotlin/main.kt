@@ -1,4 +1,3 @@
-import App
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
@@ -8,12 +7,12 @@ import com.bruno13palhano.createDatabase
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication, title = "StockManagement") {
-        App(createDatabase(DriverFactory()))
+        App(appContainer)
     }
 }
 
 @Preview
 @Composable
 fun AppDesktopPreview() {
-    App(createDatabase(DriverFactory()))
+    App(appContainer)
 }
