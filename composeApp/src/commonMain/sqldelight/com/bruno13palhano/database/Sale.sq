@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS Sale (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    productName TEXT NOT NULL,
+    productPrice REAL NOT NULL
+);
+
+insert:
+INSERT INTO Sale(productName, productPrice) VALUES (?,?);
+
+update:
+UPDATE Sale SET productName = ?, productPrice = ? WHERE id = ?;
+
+delete:
+DELETE FROM Sale WHERE id = ?;
+
+getById:
+SELECT id, productName, productPrice FROM Sale WHERE id = ?;
+
+getAll:
+SELECT Sale.* FROM Sale;
