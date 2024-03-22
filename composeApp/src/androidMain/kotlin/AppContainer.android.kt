@@ -1,3 +1,3 @@
-import com.bruno13palhano.AndroidContainer
+import com.bruno13palhano.AndroidAppContainer
 
-actual val appContainer: AppContainer = AndroidContainer()
+actual val appContainer: AppContainer = AndroidAppContainer()
