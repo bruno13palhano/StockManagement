@@ -20,8 +20,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import data.SaleLocalData
-import data.SaleRepository
 import model.Sale
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
@@ -32,9 +30,7 @@ fun HomeRoute(
     onItemClick: (id: Long) -> Unit,
     onIconMenuClick: () -> Unit,
     onAddButtonClick: () -> Unit,
-    viewModel: HomeViewModel = HomeViewModel(
-        saleRepository = SaleRepository(data = SaleLocalData())
-    )
+    viewModel: HomeViewModel
 ) {
     val sales by viewModel.sales.collectAsState()
 

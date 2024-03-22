@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.Paid
 import androidx.compose.material.icons.filled.Title
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -28,13 +27,15 @@ import stockmanagement.composeapp.generated.resources.Res
 @Composable
 fun NewSaleRoute(
     onDoneButtonClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    viewModel: SaleViewModel
 ) {
     SaleScreen(
         id = 0L,
         title = stringResource(Res.string.new_sale_label),
         onDoneButtonClick = onDoneButtonClick,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        viewModel = viewModel
     )
 }
 
@@ -43,13 +44,15 @@ fun NewSaleRoute(
 fun EditSaleRoute(
     id: Long,
     onDoneButtonClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    viewModel: SaleViewModel
 ) {
     SaleScreen(
         id = id,
         title = stringResource(Res.string.edit_sale_label),
         onBackClick = onBackClick,
-        onDoneButtonClick = onDoneButtonClick
+        onDoneButtonClick = onDoneButtonClick,
+        viewModel = viewModel
     )
 }
 
@@ -60,7 +63,7 @@ private fun SaleScreen(
     title: String,
     onDoneButtonClick: () -> Unit,
     onBackClick: () -> Unit,
-    viewModel: SaleViewModel = remember { SaleViewModel() }
+    viewModel: SaleViewModel
 ) {
     if (id != 0L) {
         LaunchedEffect(key1 = Unit) {
@@ -83,7 +86,12 @@ private fun SaleScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onDoneButtonClick) {
+            FloatingActionButton(
+                onClick = {
+                    viewModel.save(id = id)
+                    onDoneButtonClick()
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Done,
                     contentDescription = stringResource(Res.string.done_button_label)
