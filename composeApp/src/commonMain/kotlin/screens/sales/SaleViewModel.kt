@@ -9,9 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import model.Sale
 
-class SaleViewModel(
-    private val saleRepository: SaleRepository
-) {
+class SaleViewModel(private val saleRepository: SaleRepository) {
     var productName by mutableStateOf("")
         private set
     var productPrice by mutableStateOf("")
