@@ -8,19 +8,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import model.Sale
 
-class SaleLocalData(private val saleQueries: SaleQueries) : Data {
-    override suspend fun insert(sale: Sale) {
+class SaleLocalData(private val saleQueries: SaleQueries) : Data<Sale> {
+    override suspend fun insert(model: Sale) {
         saleQueries.insert(
-            productName = sale.productName,
-            productPrice = sale.productPrice.toDouble()
+            productName = model.productName,
+            productPrice = model.productPrice.toDouble()
         )
     }
 
-    override suspend fun update(sale: Sale) {
+    override suspend fun update(model: Sale) {
         saleQueries.update(
-            productName = sale.productName,
-            productPrice = sale.productPrice.toDouble(),
-            id = sale.id
+            productName = model.productName,
+            productPrice = model.productPrice.toDouble(),
+            id = model.id
         )
     }
 

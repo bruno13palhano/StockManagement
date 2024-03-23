@@ -1,12 +1,11 @@
 package data
 
 import kotlinx.coroutines.flow.Flow
-import model.Sale
 
-interface Data {
-    suspend fun insert(sale: Sale)
-    suspend fun update(sale: Sale)
+interface Data<T> {
+    suspend fun insert(model: T)
+    suspend fun update(model: T)
     suspend fun delete(id: Long)
-    fun getById(id: Long): Flow<Sale>
-    fun getAll(): Flow<List<Sale>>
+    fun getById(id: Long): Flow<T>
+    fun getAll(): Flow<List<T>>
 }
