@@ -33,7 +33,10 @@ private fun FinancialScreen(
                 title = { Text(text = stringResource(Res.string.financial_label)) },
                 navigationIcon = {
                     IconButton(onClick = onIconMenuClick) {
-                        Icon(imageVector = Icons.Filled.Menu, contentDescription = null)
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = stringResource(Res.string.drawer_menu_label)
+                        )
                     }
                 }
             )

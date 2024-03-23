@@ -62,7 +62,7 @@ private fun HomeScreen(
                     IconButton(onClick = onIconMenuClick) {
                         Icon(
                             imageVector = Icons.Filled.Menu,
-                            contentDescription = stringResource(Res.string.navigate_back_label)
+                            contentDescription = stringResource(Res.string.drawer_menu_label)
                         )
                     }
                 }
