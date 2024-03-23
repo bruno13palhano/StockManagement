@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">StockManagement</string>
     <string name="home_label">Home</string>
+    <string name="financial_label">Financial</string>
     <string name="edit_sale_label">Edit Sale</string>
     <string name="new_sale_label">New Sale</string>
     <string name="product_name_label">Product name</string>
