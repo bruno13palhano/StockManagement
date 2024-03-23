@@ -14,6 +14,9 @@ import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Insights
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,6 +29,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -35,6 +39,7 @@ import kotlinx.coroutines.launch
 import navigation.NavController
 import navigation.Route
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import stockmanagement.composeapp.generated.resources.Res
 
@@ -103,6 +108,20 @@ fun Menu(
             }
         },
         content = content
+    )
+}
+
+@OptIn(ExperimentalResourceApi::class)
+sealed class MenuScreen(val route: String, val icon: ImageVector, val resourceId: StringResource) {
+    data object Home: MenuScreen(
+        route = Route.HOME,
+        icon = Icons.Filled.Home,
+        resourceId = Res.string.home_label
+    )
+    data object Financial: MenuScreen(
+        route = Route.FINANCIAL,
+        icon = Icons.Filled.Insights,
+        resourceId = Res.string.financial_label
     )
 }
 
