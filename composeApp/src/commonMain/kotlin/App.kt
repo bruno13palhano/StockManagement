@@ -8,6 +8,8 @@ import kotlinx.coroutines.launch
 import navigation.MainNavigation
 import navigation.rememberNavController
 import screens.components.Menu
+import screens.customer.CustomerViewModel
+import screens.customer.CustomersViewModel
 import screens.home.HomeViewModel
 import screens.sales.SaleViewModel
 
@@ -29,7 +31,9 @@ fun App(appContainer: AppContainer) {
                     },
                     navController = navController,
                     homeViewModel = HomeViewModel(appContainer.saleRepository),
-                    saleViewModel = SaleViewModel(appContainer.saleRepository)
+                    saleViewModel = SaleViewModel(appContainer.saleRepository),
+                    customerViewModel = CustomerViewModel(appContainer.customerRepository),
+                    customersViewModel = CustomersViewModel(appContainer.customerRepository)
                 )
             }
         }

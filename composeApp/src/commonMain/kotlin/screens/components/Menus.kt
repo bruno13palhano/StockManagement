@@ -17,6 +17,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Insights
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -55,7 +56,8 @@ fun Menu(
 ) {
     val menuItems = listOf(
         MenuScreen.Home,
-        MenuScreen.Financial
+        MenuScreen.Financial,
+        MenuScreen.Customers
     )
 
     val navBackStackEntry by remember { mutableStateOf(navController.navBackStackEntry.navigationStack) }
@@ -122,6 +124,11 @@ sealed class MenuScreen(val route: String, val icon: ImageVector, val resourceId
         route = Route.FINANCIAL,
         icon = Icons.Filled.Insights,
         resourceId = Res.string.financial_label
+    )
+    data object Customers: MenuScreen(
+        route = Route.CUSTOMERS,
+        icon = Icons.Filled.Person,
+        resourceId = Res.string.customers_label
     )
 }
 

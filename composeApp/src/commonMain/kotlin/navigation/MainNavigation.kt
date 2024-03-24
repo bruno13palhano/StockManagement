@@ -1,6 +1,11 @@
 package navigation
 
 import androidx.compose.runtime.Composable
+import screens.customer.CustomerViewModel
+import screens.customer.CustomersRoute
+import screens.customer.CustomersViewModel
+import screens.customer.EditCustomerRoute
+import screens.customer.NewCustomerRoute
 import screens.financial.FinancialRoute
 import screens.home.HomeRoute
 import screens.home.HomeViewModel
@@ -13,6 +18,8 @@ fun MainNavigation(
     onIconMenuClick: () -> Unit,
     homeViewModel: HomeViewModel,
     saleViewModel: SaleViewModel,
+    customerViewModel: CustomerViewModel,
+    customersViewModel: CustomersViewModel,
     navController: NavController = rememberNavController()
 ) {
     NavHost(
@@ -53,6 +60,34 @@ fun MainNavigation(
             composable(route = Route.FINANCIAL) {
                 FinancialRoute(onIconMenuClick = onIconMenuClick)
             }
+            composable(route = Route.CUSTOMERS) {
+                CustomersRoute(
+                    onItemClick = { id ->
+                        navController.navigate(route = "${Route.EDIT_CUSTOMER}/$id")
+                    },
+                    onIconMenuClick = onIconMenuClick,
+                    onAddButtonClick = { navController.navigate(route = Route.NEW_CUSTOMER) },
+                    viewModel = customersViewModel
+                )
+            }
+            composable(route = Route.NEW_CUSTOMER) {
+                NewCustomerRoute(
+                    onBackClick = { navController.navigateUp() },
+                    viewModel = customerViewModel
+                )
+            }
+            composable(
+                route = Route.EDIT_CUSTOMER,
+                arguments = listOf(navArgument(ITEM_ID) { setType(type = NavType.LongType) })
+            ) { backStackEntry ->
+                backStackEntry.arguments.getLong(ITEM_ID)?.let { id ->
+                    EditCustomerRoute(
+                        id = id,
+                        onBackClick = { navController.navigateUp() },
+                        viewModel = customerViewModel
+                    )
+                }
+            }
         }
     }
 }
@@ -65,4 +100,7 @@ object Route {
     const val FINANCIAL = "financial_route"
     const val EDIT_SALE = "edit_sale_route"
     const val NEW_SALE = "new_sale_route"
+    const val CUSTOMERS = "customers_route"
+    const val EDIT_CUSTOMER = "edit_customer_route"
+    const val NEW_CUSTOMER = "new_customer_route"
 }
