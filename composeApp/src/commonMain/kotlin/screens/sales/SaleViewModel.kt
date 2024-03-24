@@ -7,12 +7,13 @@ import data.SaleRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import model.Sale
 
 class SaleViewModel(
     private val saleRepository: SaleRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) {
     var productName by mutableStateOf("")
         private set
@@ -28,7 +29,7 @@ class SaleViewModel(
     }
 
     fun getSale(id: Long) {
-        CoroutineScope(dispatcher).launch {
+        CoroutineScope(SupervisorJob() + dispatcher).launch {
             saleRepository.getById(id = id).collect {
                 productName = it.productName
                 productPrice = it.productPrice.toString()
@@ -37,7 +38,7 @@ class SaleViewModel(
     }
 
     fun save(id: Long) {
-        CoroutineScope(dispatcher).launch {
+        CoroutineScope(SupervisorJob() + dispatcher).launch {
             if (id == 0L) {
                 saleRepository.insert(Sale(id = 0L, productName, productPrice.toFloat()))
             } else {

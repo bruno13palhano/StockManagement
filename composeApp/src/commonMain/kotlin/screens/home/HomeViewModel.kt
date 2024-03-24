@@ -4,20 +4,29 @@ import data.SaleRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import model.Sale
 
 class HomeViewModel(
     private val saleRepository: SaleRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) {
-    var sales = MutableStateFlow<List<Sale>>(emptyList())
+    private var _sales = MutableStateFlow<List<Sale>>(emptyList())
+    val sales = _sales
+        .stateIn(
+            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            started = WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
 
     fun fetchData() {
-        CoroutineScope(dispatcher).launch {
+        CoroutineScope(SupervisorJob() + dispatcher).launch {
             saleRepository.getAll().collect {
-                sales.value = it
+                _sales.value = it
             }
         }
     }
