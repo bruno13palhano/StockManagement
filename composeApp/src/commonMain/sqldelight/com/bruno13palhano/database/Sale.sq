@@ -1,20 +1,54 @@
+import kotlin.Boolean;
+
 CREATE TABLE IF NOT EXISTS Sale (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    customerId INTEGER NOT NULL,
     productName TEXT NOT NULL,
-    productPrice REAL NOT NULL
+    purchasePrice REAL NOT NULL,
+    salePrice REAL NOT NULL,
+    deliveryPrice REAL NOT NULL,
+    amazonCode TEXT NOT NULL,
+    sku TEXT NOT NULL,
+    requestNumber INTEGER NOT NULL,
+    tax INTEGER NOT NULL,
+    amazonProfit REAL NOT NULL,
+    resaleProfit REAL NOT NULL,
+    totalProfit REAL NOT NULL,
+    dateOfSale INTEGER NOT NULL,
+    dateOfPayment INTEGER NOT NULL,
+    dateOfShipping INTEGER NOT NULL,
+    dateOfDelivery INTEGER NOT NULL,
+    isPaid INTEGER AS Boolean NOT NULL,
+    delivered INTEGER AS Boolean NOT NULL,
+    canceled INTEGER AS Boolean NOT NULL
 );
 
 insert:
-INSERT INTO Sale(productName, productPrice) VALUES (?,?);
+INSERT INTO Sale(customerId, productName, purchasePrice, salePrice, deliveryPrice, amazonCode, sku,
+    requestNumber, tax, amazonProfit, resaleProfit, totalProfit, dateOfSale, dateOfPayment,
+    dateOfShipping, dateOfDelivery, isPaid, delivered, canceled)
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
 
 update:
-UPDATE Sale SET productName = ?, productPrice = ? WHERE id = ?;
+UPDATE Sale SET customerId = ?, productName = ?, purchasePrice = ?, salePrice = ?, deliveryPrice = ?,
+    amazonCode = ?, sku = ?, requestNumber = ?, tax = ?, amazonProfit = ?, resaleProfit = ?,
+    totalProfit = ?, dateOfSale = ?, dateOfPayment = ?, dateOfShipping = ?, dateOfDelivery = ?,
+    isPaid = ?, delivered = ?, canceled = ?
+WHERE id = ?;
 
 delete:
 DELETE FROM Sale WHERE id = ?;
 
 getById:
-SELECT id, productName, productPrice FROM Sale WHERE id = ?;
+SELECT S.id, S.customerId, S.productName, C.name, S.purchasePrice, S.salePrice, S.deliveryPrice,
+    S.amazonCode, S.sku, S.requestNumber, S.tax, S.amazonProfit, S.resaleProfit, S.totalProfit,
+    S.dateOfSale, S.dateOfPayment, S.dateOfShipping, S.dateOfDelivery, S.isPaid, S.delivered,
+    S.canceled
+FROM Sale S INNER JOIN Customer C ON(S.customerId == C.id) WHERE S.id = ?;
 
 getAll:
-SELECT Sale.* FROM Sale;
+SELECT S.id, S.customerId, S.productName, C.name, S.purchasePrice, S.salePrice, S.deliveryPrice,
+    S.amazonCode, S.sku, S.requestNumber, S.tax, S.amazonProfit, S.resaleProfit, S.totalProfit,
+    S.dateOfSale, S.dateOfPayment, S.dateOfShipping, S.dateOfDelivery, S.isPaid, S.delivered,
+    S.canceled
+FROM Sale S INNER JOIN Customer C ON(S.customerId == C.id);
