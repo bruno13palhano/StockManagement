@@ -1,23 +1,23 @@
 package screens.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.DrawerState
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.ListItem
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ModalDrawer
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Insights
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,16 +25,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Outline
-import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import navigation.NavController
@@ -44,10 +37,7 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import stockmanagement.composeapp.generated.resources.Res
 
-@OptIn(
-    ExperimentalMaterialApi::class, ExperimentalResourceApi::class,
-    ExperimentalFoundationApi::class
-)
+@OptIn(ExperimentalResourceApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun Menu(
     drawerState: DrawerState,
@@ -64,32 +54,30 @@ fun Menu(
     val currentItem by navController.currentRoute().collectAsState(initial = Route.HOME)
     val scope = rememberCoroutineScope()
 
-    ModalDrawer(
+    ModalNavigationDrawer(
         drawerState = drawerState,
-        drawerShape = DrawerMenuShape(widthOffset = 0.dp, scale = .7F),
         drawerContent = {
-            LazyColumn {
-                stickyHeader {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(24.dp),
-                        text = stringResource(Res.string.app_name),
-                        textAlign = TextAlign.Start,
-                        style = MaterialTheme.typography.h6
-                    )
-                }
-                items(items = menuItems, key = { item -> item.route }) { item ->
-                    ListItem(
-                        modifier = Modifier
-                            .background(
-                                color = if (currentItem == item.route) {
-                                    MaterialTheme.colors.primary
-                                } else {
-                                    MaterialTheme.colors.surface
-                                }
-                            )
-                            .clickable {
+            ModalDrawerSheet(
+                drawerShape = RectangleShape
+            ) {
+                LazyColumn {
+                    stickyHeader {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(24.dp),
+                            text = stringResource(Res.string.app_name),
+                            textAlign = TextAlign.Start,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                    items(items = menuItems, key = { item -> item.route }) { item ->
+                        NavigationDrawerItem(
+                            shape = RoundedCornerShape(0, 50, 50, 0),
+                            icon = { Icon(imageVector = item.icon, contentDescription = null) },
+                            label = { Text(stringResource(item.resourceId)) },
+                            selected = item.route == currentItem,
+                            onClick = {
                                 if (navBackStackEntry.lastOrNull() != item.route) {
                                     navController.navigate(route = item.route)
                                 }
@@ -97,14 +85,10 @@ fun Menu(
                                     drawerState.close()
                                 }
                             },
-                        icon = {
-                            Icon(
-                                imageVector = item.icon,
-                                contentDescription = stringResource(item.resourceId)
-                            )
-                        }
-                    ) {
-                        Text(text = stringResource(item.resourceId))
+                            modifier = Modifier
+                                .padding(top = 4.dp, bottom = 4.dp, end = 8.dp)
+                                .height(52.dp)
+                        )
                     }
                 }
             }
@@ -130,26 +114,4 @@ sealed class MenuScreen(val route: String, val icon: ImageVector, val resourceId
         icon = Icons.Filled.Person,
         resourceId = Res.string.customers_label
     )
-}
-
-private class DrawerMenuShape(
-    private val widthOffset: Dp,
-    private val scale: Float
-) : Shape {
-
-    override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        return Outline.Rectangle(
-            Rect(
-                Offset.Zero,
-                Offset(
-                    size.width * scale + with(density) { widthOffset.toPx() },
-                    size.height
-                )
-            )
-        )
-    }
 }
