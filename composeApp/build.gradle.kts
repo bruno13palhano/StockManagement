@@ -5,7 +5,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
-    id("app.cash.sqldelight") version "2.0.1"}
+    id("app.cash.sqldelight") version "2.0.1"
+}
 
 kotlin {
     val sqlDelightVersion = "2.0.1"
@@ -26,7 +27,6 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
-            implementation("app.cash.sqldelight:android-driver:2.0.1")
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -37,6 +37,7 @@ kotlin {
             implementation("androidx.compose.material:material-icons-extended:1.6.3")
             implementation("app.cash.sqldelight:sqlite-driver:2.0.1")
             implementation("app.cash.sqldelight:coroutines-extensions:2.0.1")
+            implementation(compose.material3)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
