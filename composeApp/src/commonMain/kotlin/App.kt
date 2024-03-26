@@ -31,7 +31,7 @@ fun App(appContainer: AppContainer) {
                     },
                     navController = navController,
                     homeViewModel = HomeViewModel(appContainer.saleRepository),
-                    saleViewModel = SaleViewModel(appContainer.saleRepository),
+                    saleViewModel = SaleViewModel(appContainer.saleRepository, appContainer.customerRepository),
                     customerViewModel = CustomerViewModel(appContainer.customerRepository),
                     customersViewModel = CustomersViewModel(appContainer.customerRepository)
                 )
