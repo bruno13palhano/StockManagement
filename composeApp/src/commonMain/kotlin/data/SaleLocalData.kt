@@ -11,15 +11,49 @@ import model.Sale
 class SaleLocalData(private val saleQueries: SaleQueries) : Data<Sale> {
     override suspend fun insert(model: Sale) {
         saleQueries.insert(
+            customerId = model.customerId,
             productName = model.productName,
-            productPrice = model.productPrice.toDouble()
+            purchasePrice = model.purchasePrice.toDouble(),
+            salePrice = model.salePrice.toDouble(),
+            deliveryPrice = model.deliveryPrice.toDouble(),
+            amazonCode = model.amazonCode,
+            sku = model.sku,
+            requestNumber = model.requestNumber,
+            tax = model.tax.toLong(),
+            amazonProfit = model.amazonProfit.toDouble(),
+            resaleProfit = model.resaleProfit.toDouble(),
+            totalProfit = model.totalProfit.toDouble(),
+            dateOfSale = model.dateOfSale,
+            dateOfPayment = model.dateOfPayment,
+            dateOfShipping = model.dateOfShipping,
+            dateOfDelivery = model.dateOfDelivery,
+            isPaid = model.isPaid,
+            delivered = model.delivered,
+            canceled = model.canceled
         )
     }
 
     override suspend fun update(model: Sale) {
         saleQueries.update(
+            customerId = model.customerId,
             productName = model.productName,
-            productPrice = model.productPrice.toDouble(),
+            purchasePrice = model.purchasePrice.toDouble(),
+            salePrice = model.salePrice.toDouble(),
+            deliveryPrice = model.deliveryPrice.toDouble(),
+            amazonCode = model.amazonCode,
+            sku = model.sku,
+            requestNumber = model.requestNumber,
+            tax = model.tax.toLong(),
+            amazonProfit = model.amazonProfit.toDouble(),
+            resaleProfit = model.resaleProfit.toDouble(),
+            totalProfit = model.totalProfit.toDouble(),
+            dateOfSale = model.dateOfSale,
+            dateOfPayment = model.dateOfPayment,
+            dateOfShipping = model.dateOfShipping,
+            dateOfDelivery = model.dateOfDelivery,
+            isPaid = model.isPaid,
+            delivered = model.delivered,
+            canceled = model.canceled,
             id = model.id
         )
     }
@@ -38,11 +72,47 @@ class SaleLocalData(private val saleQueries: SaleQueries) : Data<Sale> {
 
     private fun mapToSale(
         id: Long,
+        customerId: Long,
         productName: String,
-        productPrice: Double
+        customerName: String,
+        purchasePrice: Double,
+        salePrice: Double,
+        deliveryPrice: Double,
+        amazonCode: String,
+        sku: String,
+        requestNumber: Long,
+        tax: Long,
+        amazonProfit: Double,
+        resaleProfit: Double,
+        totalProfit: Double,
+        dateOfSale: Long,
+        dateOfPayment: Long,
+        dateOfShipping: Long,
+        dateOfDelivery: Long,
+        isPaid: Boolean,
+        delivered: Boolean,
+        canceled: Boolean
     ) = Sale(
         id = id,
+        customerId = customerId,
         productName = productName,
-        productPrice = productPrice.toFloat()
+        customerName = customerName,
+        purchasePrice = purchasePrice.toFloat(),
+        salePrice = salePrice.toFloat(),
+        deliveryPrice = deliveryPrice.toFloat(),
+        amazonCode = amazonCode,
+        sku = sku,
+        requestNumber = requestNumber,
+        tax = tax.toInt(),
+        amazonProfit = amazonProfit.toFloat(),
+        resaleProfit = resaleProfit.toFloat(),
+        totalProfit = totalProfit.toFloat(),
+        dateOfSale = dateOfSale,
+        dateOfPayment = dateOfPayment,
+        dateOfShipping = dateOfShipping,
+        dateOfDelivery = dateOfDelivery,
+        isPaid = isPaid,
+        delivered = delivered,
+        canceled = canceled
     )
 }
