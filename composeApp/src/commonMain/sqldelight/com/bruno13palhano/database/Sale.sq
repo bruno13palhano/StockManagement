@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS Sale (
     productName TEXT NOT NULL,
     purchasePrice REAL NOT NULL,
     salePrice REAL NOT NULL,
+    quantity INTEGER NOT NULL,
     deliveryPrice REAL NOT NULL,
     amazonCode TEXT NOT NULL,
     sku TEXT NOT NULL,
@@ -24,31 +25,31 @@ CREATE TABLE IF NOT EXISTS Sale (
 );
 
 insert:
-INSERT INTO Sale(customerId, productName, purchasePrice, salePrice, deliveryPrice, amazonCode, sku,
-    requestNumber, tax, amazonProfit, resaleProfit, totalProfit, dateOfSale, dateOfPayment,
-    dateOfShipping, dateOfDelivery, isPaid, delivered, canceled)
-VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
+INSERT INTO Sale(customerId, productName, purchasePrice, salePrice, quantity, deliveryPrice,
+    amazonCode, sku, requestNumber, tax, amazonProfit, resaleProfit, totalProfit, dateOfSale,
+    dateOfPayment, dateOfShipping, dateOfDelivery, isPaid, delivered, canceled)
+VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);
 
 update:
-UPDATE Sale SET customerId = ?, productName = ?, purchasePrice = ?, salePrice = ?, deliveryPrice = ?,
-    amazonCode = ?, sku = ?, requestNumber = ?, tax = ?, amazonProfit = ?, resaleProfit = ?,
-    totalProfit = ?, dateOfSale = ?, dateOfPayment = ?, dateOfShipping = ?, dateOfDelivery = ?,
-    isPaid = ?, delivered = ?, canceled = ?
+UPDATE Sale SET customerId = ?, productName = ?, purchasePrice = ?, salePrice = ?, quantity = ?,
+    deliveryPrice = ?, amazonCode = ?, sku = ?, requestNumber = ?, tax = ?, amazonProfit = ?,
+    resaleProfit = ?, totalProfit = ?, dateOfSale = ?, dateOfPayment = ?, dateOfShipping = ?,
+    dateOfDelivery = ?, isPaid = ?, delivered = ?, canceled = ?
 WHERE id = ?;
 
 delete:
 DELETE FROM Sale WHERE id = ?;
 
 getById:
-SELECT S.id, S.customerId, S.productName, C.name, S.purchasePrice, S.salePrice, S.deliveryPrice,
-    S.amazonCode, S.sku, S.requestNumber, S.tax, S.amazonProfit, S.resaleProfit, S.totalProfit,
-    S.dateOfSale, S.dateOfPayment, S.dateOfShipping, S.dateOfDelivery, S.isPaid, S.delivered,
-    S.canceled
+SELECT S.id, S.customerId, S.productName, C.name, S.purchasePrice, S.salePrice, S.quantity,
+    S.deliveryPrice, S.amazonCode, S.sku, S.requestNumber, S.tax, S.amazonProfit, S.resaleProfit,
+    S.totalProfit, S.dateOfSale, S.dateOfPayment, S.dateOfShipping, S.dateOfDelivery, S.isPaid,
+    S.delivered, S.canceled
 FROM Sale S INNER JOIN Customer C ON(S.customerId == C.id) WHERE S.id = ?;
 
 getAll:
-SELECT S.id, S.customerId, S.productName, C.name, S.purchasePrice, S.salePrice, S.deliveryPrice,
-    S.amazonCode, S.sku, S.requestNumber, S.tax, S.amazonProfit, S.resaleProfit, S.totalProfit,
-    S.dateOfSale, S.dateOfPayment, S.dateOfShipping, S.dateOfDelivery, S.isPaid, S.delivered,
-    S.canceled
+SELECT S.id, S.customerId, S.productName, C.name, S.purchasePrice, S.salePrice, S.quantity,
+    S.deliveryPrice, S.amazonCode, S.sku, S.requestNumber, S.tax, S.amazonProfit, S.resaleProfit,
+    S.totalProfit, S.dateOfSale, S.dateOfPayment, S.dateOfShipping, S.dateOfDelivery, S.isPaid,
+    S.delivered, S.canceled
 FROM Sale S INNER JOIN Customer C ON(S.customerId == C.id);
