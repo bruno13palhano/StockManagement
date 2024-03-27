@@ -7,6 +7,7 @@ data class Sale(
     val customerName: String,
     val purchasePrice: Float,
     val salePrice: Float,
+    val quantity: Int,
     val deliveryPrice: Float,
     val amazonCode: String,
     val sku: String,
