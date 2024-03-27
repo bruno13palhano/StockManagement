@@ -1,5 +1,6 @@
 package navigation
 
+import AppContainer
 import androidx.compose.runtime.Composable
 import screens.customer.CustomerViewModel
 import screens.customer.CustomersRoute
@@ -16,10 +17,7 @@ import screens.sales.SaleViewModel
 @Composable
 fun MainNavigation(
     onIconMenuClick: () -> Unit,
-    homeViewModel: HomeViewModel,
-    saleViewModel: SaleViewModel,
-    customerViewModel: CustomerViewModel,
-    customersViewModel: CustomersViewModel,
+    appContainer: AppContainer,
     navController: NavController = rememberNavController()
 ) {
     NavHost(
@@ -34,14 +32,17 @@ fun MainNavigation(
                     },
                     onIconMenuClick = onIconMenuClick,
                     onAddButtonClick = { navController.navigate(route = Route.NEW_SALE) },
-                    viewModel = homeViewModel
+                    viewModel = HomeViewModel(saleRepository = appContainer.saleRepository)
                 )
             }
             composable(route = Route.NEW_SALE) {
                 NewSaleRoute(
                     onDoneButtonClick = { navController.navigateUp() },
                     onBackClick = { navController.navigateUp() },
-                    viewModel = saleViewModel
+                    viewModel = SaleViewModel(
+                        saleRepository = appContainer.saleRepository,
+                        customerRepository = appContainer.customerRepository
+                    )
                 )
             }
             composable(
@@ -53,7 +54,10 @@ fun MainNavigation(
                         id = id,
                         onDoneButtonClick = { navController.navigateUp() },
                         onBackClick = { navController.navigateUp() },
-                        viewModel = saleViewModel
+                        viewModel = SaleViewModel(
+                            saleRepository = appContainer.saleRepository,
+                            customerRepository = appContainer.customerRepository
+                        )
                     )
                 }
             }
@@ -67,13 +71,17 @@ fun MainNavigation(
                     },
                     onIconMenuClick = onIconMenuClick,
                     onAddButtonClick = { navController.navigate(route = Route.NEW_CUSTOMER) },
-                    viewModel = customersViewModel
+                    viewModel = CustomersViewModel(
+                        customerRepository = appContainer.customerRepository
+                    )
                 )
             }
             composable(route = Route.NEW_CUSTOMER) {
                 NewCustomerRoute(
                     onBackClick = { navController.navigateUp() },
-                    viewModel = customerViewModel
+                    viewModel = CustomerViewModel(
+                        customerRepository = appContainer.customerRepository
+                    )
                 )
             }
             composable(
@@ -84,7 +92,9 @@ fun MainNavigation(
                     EditCustomerRoute(
                         id = id,
                         onBackClick = { navController.navigateUp() },
-                        viewModel = customerViewModel
+                        viewModel = CustomerViewModel(
+                            customerRepository = appContainer.customerRepository
+                        )
                     )
                 }
             }

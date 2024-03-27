@@ -8,10 +8,6 @@ import kotlinx.coroutines.launch
 import navigation.MainNavigation
 import navigation.rememberNavController
 import screens.components.Menu
-import screens.customer.CustomerViewModel
-import screens.customer.CustomersViewModel
-import screens.home.HomeViewModel
-import screens.sales.SaleViewModel
 
 @Composable
 fun App(appContainer: AppContainer) {
@@ -29,11 +25,8 @@ fun App(appContainer: AppContainer) {
                                 drawerState.open()
                         }
                     },
-                    navController = navController,
-                    homeViewModel = HomeViewModel(appContainer.saleRepository),
-                    saleViewModel = SaleViewModel(appContainer.saleRepository, appContainer.customerRepository),
-                    customerViewModel = CustomerViewModel(appContainer.customerRepository),
-                    customersViewModel = CustomersViewModel(appContainer.customerRepository)
+                    appContainer = appContainer,
+                    navController = navController
                 )
             }
         }
