@@ -4,12 +4,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import data.CustomerRepository
 import data.SaleRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import model.Sale
 
@@ -29,6 +33,8 @@ class SaleViewModel(
         private set
     var salePrice by mutableStateOf("")
         private set
+    var quantity by mutableStateOf("")
+        private set
     var deliveryPrice by mutableStateOf("")
         private set
     var amazonCode by mutableStateOf("")
@@ -39,11 +45,7 @@ class SaleViewModel(
         private set
     var tax by mutableStateOf("")
         private set
-    var amazonProfit by mutableStateOf("")
-        private set
     var resaleProfit by mutableStateOf("")
-        private set
-    var totalProfit by mutableStateOf("")
         private set
     var dateOfSale by mutableLongStateOf(0L)
         private set
@@ -60,11 +62,38 @@ class SaleViewModel(
     var allCustomers by mutableStateOf(listOf<CustomerCheck>())
         private set
 
+    private val _amazonProfit = snapshotFlow { calcAmazonProfit() }
+    val amazonProfit = _amazonProfit
+        .stateIn(
+            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            started = WhileSubscribed(5_000),
+            initialValue = ""
+        )
+
+    private val _totalProfit = combine(
+        amazonProfit,
+        snapshotFlow { purchasePrice },
+        snapshotFlow { quantity },
+        snapshotFlow { resaleProfit }
+    ) { aProfit, pPrice, qtd, rProfit ->
+        ((stringToFloat(aProfit) - (stringToFloat(pPrice) * stringToFloat(qtd)))
+                + stringToFloat(rProfit)).toString()
+    }
+
+    val totalProfit = _totalProfit
+        .stateIn(
+            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            started = WhileSubscribed(5_000),
+            initialValue = ""
+        )
+
     fun updateProductName(productName: String) { this.productName = productName }
 
     fun updatePurchasePrice(purchasePrice: String) { this.purchasePrice = purchasePrice }
 
     fun updateSalePrice(salePrice: String) { this.salePrice = salePrice }
+
+    fun updateQuantity(quantity: String) { this.quantity = quantity }
 
     fun updateDeliveryPrice(deliveryPrice: String) { this.deliveryPrice = deliveryPrice }
 
@@ -76,11 +105,7 @@ class SaleViewModel(
 
     fun updateTax(tax: String) { this.tax = tax }
 
-    fun updateAmazonProfit(amazonProfit: String) { this.amazonProfit = amazonProfit }
-
     fun updateResaleProfit(resaleProfit: String) { this.resaleProfit = resaleProfit }
-
-    fun updateTotalProfit(totalProfit: String) { this.totalProfit = totalProfit }
 
     fun updateDateOfSale(date: Long) { dateOfSale = date }
 
@@ -114,14 +139,13 @@ class SaleViewModel(
                 customerName = it.customerName
                 purchasePrice = it.purchasePrice.toString()
                 salePrice = it.salePrice.toString()
+                quantity = it.quantity.toString()
                 deliveryPrice = it.deliveryPrice.toString()
                 amazonCode = it.amazonCode
                 sku = it.sku
                 requestNumber = it.requestNumber.toString()
                 tax = it.tax.toString()
-                amazonProfit = it.amazonProfit.toString()
-                resaleProfit = it.amazonProfit.toString()
-                totalProfit = it.totalProfit.toString()
+                resaleProfit = it.resaleProfit.toString()
                 updateDateOfSale(it.dateOfSale)
                 updateDateOfPayment(it.dateOfPayment)
                 updateDateOfShipping(it.dateOfShipping)
@@ -178,16 +202,17 @@ class SaleViewModel(
             customerId = customerId,
             productName = productName,
             customerName = customerName,
-            purchasePrice = purchasePrice.toFloat(),
-            salePrice = salePrice.toFloat(),
-            deliveryPrice = deliveryPrice.toFloat(),
+            purchasePrice = stringToFloat(purchasePrice),
+            salePrice = stringToFloat(salePrice),
+            quantity = stringToInt(quantity),
+            deliveryPrice = stringToFloat(deliveryPrice),
             amazonCode = amazonCode,
             sku = sku,
-            requestNumber = requestNumber.toLong(),
-            tax = tax.toInt(),
-            amazonProfit = amazonProfit.toFloat(),
-            resaleProfit = resaleProfit.toFloat(),
-            totalProfit = totalProfit.toFloat(),
+            requestNumber = stringToLong(requestNumber),
+            tax = stringToInt(tax),
+            amazonProfit = stringToFloat(amazonProfit.value),
+            resaleProfit = stringToFloat(resaleProfit),
+            totalProfit = stringToFloat(totalProfit.value),
             dateOfSale = dateOfSale,
             dateOfPayment = dateOfPayment,
             dateOfShipping = dateOfShipping,
@@ -197,7 +222,18 @@ class SaleViewModel(
             canceled = canceled
         )
     }
+
+    private fun calcAmazonProfit(): String {
+        return (if (salePrice.isNotEmpty()) {
+            val totalAmazonPrice = (stringToFloat(salePrice) * stringToFloat(quantity))
+            totalAmazonPrice - ((stringToFloat(tax) * totalAmazonPrice) / 100)
+        } else 0F).toString()
+    }
 }
+
+private fun stringToInt(value: String) = try { value.toInt() } catch(e: Exception) { 0 }
+private fun stringToLong(value: String) = try { value.toLong() } catch (e: Exception) { 0L }
+private fun stringToFloat(value: String) = try {  value.toFloat() } catch (e: Exception) { 0F }
 
 data class CustomerCheck(
     var id: Long,

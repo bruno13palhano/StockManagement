@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Percent
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PieChart
 import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material.icons.filled.Title
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -37,6 +38,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -112,6 +114,9 @@ private fun SaleScreen(
             viewModel.updateDateOfDelivery(currentDate)
         }
     }
+
+    val totalProfit by viewModel.totalProfit.collectAsState()
+    val amazonProfit by viewModel.amazonProfit.collectAsState()
 
     val focusManager = LocalFocusManager.current
 
@@ -342,6 +347,13 @@ private fun SaleScreen(
                 label = stringResource(Res.string.sale_price_label),
                 placeholder = stringResource(Res.string.enter_sale_price_label)
             )
+            IntegerInputField(
+                value = viewModel.quantity,
+                onValueChange = viewModel::updateQuantity,
+                icon = Icons.Filled.ShoppingBag,
+                label = stringResource(Res.string.quantity_label),
+                placeholder = stringResource(Res.string.enter_quantity_label)
+            )
             FloatInputField(
                 value = viewModel.deliveryPrice,
                 onValueChange = viewModel::updateDeliveryPrice,
@@ -378,8 +390,8 @@ private fun SaleScreen(
                 placeholder = stringResource(Res.string.enter_tax_label)
             )
             FloatInputField(
-                value = viewModel.amazonProfit,
-                onValueChange = viewModel::updateAmazonProfit,
+                value = amazonProfit,
+                onValueChange = {},
                 icon = Icons.Filled.BarChart,
                 label = stringResource(Res.string.amazon_profit_label),
                 placeholder = ""
@@ -392,8 +404,8 @@ private fun SaleScreen(
                 placeholder = stringResource(Res.string.enter_resale_profit_label)
             )
             FloatInputField(
-                value = viewModel.totalProfit,
-                onValueChange = viewModel::updateTotalProfit,
+                value = totalProfit,
+                onValueChange = {},
                 icon = Icons.Filled.PieChart,
                 label = stringResource(Res.string.total_profit_label),
                 placeholder = ""
