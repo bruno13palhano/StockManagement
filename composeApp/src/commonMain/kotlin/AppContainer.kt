@@ -1,5 +1,5 @@
-import data.CustomerRepository
-import data.SaleRepository
+import data.customer.CustomerRepository
+import data.sale.SaleRepository
 
 interface AppContainer {
     val saleRepository: SaleRepository

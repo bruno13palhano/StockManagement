@@ -1,10 +1,10 @@
 package com.bruno13palhano
 
 import AppContainer
-import data.CustomerLocalData
-import data.CustomerRepository
-import data.SaleLocalData
-import data.SaleRepository
+import data.customer.CustomerLocalData
+import data.customer.CustomerRepository
+import data.sale.SaleLocalData
+import data.sale.SaleRepository
 
 class DesktopAppContainer : AppContainer {
     private val database = createDatabase(driverFactory = DriverFactory())

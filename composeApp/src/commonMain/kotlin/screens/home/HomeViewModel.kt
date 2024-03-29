@@ -1,6 +1,6 @@
 package screens.home
 
-import data.SaleRepository
+import data.sale.SaleRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

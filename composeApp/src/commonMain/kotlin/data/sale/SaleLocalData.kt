@@ -1,9 +1,10 @@
-package data
+package data.sale
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import com.bruno13palhano.database.SaleQueries
+import data.Data
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import model.Sale

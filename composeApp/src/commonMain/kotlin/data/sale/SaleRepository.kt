@@ -1,5 +1,7 @@
-package data
+package data.sale
 
+import data.Data
+import data.Repository
 import kotlinx.coroutines.flow.Flow
 import model.Sale
 

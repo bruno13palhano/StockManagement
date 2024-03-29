@@ -1,6 +1,6 @@
 package screens.customer
 
-import data.CustomerRepository
+import data.customer.CustomerRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
