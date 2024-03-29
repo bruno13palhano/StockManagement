@@ -4,12 +4,15 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import com.bruno13palhano.database.SaleQueries
-import data.Data
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import model.Sale
 
-class SaleLocalData(private val saleQueries: SaleQueries) : Data<Sale> {
+class SaleLocalData(
+    private val saleQueries: SaleQueries,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) : SaleData {
     override suspend fun insert(model: Sale) {
         saleQueries.insert(
             customerId = model.customerId,
@@ -66,11 +69,16 @@ class SaleLocalData(private val saleQueries: SaleQueries) : Data<Sale> {
     }
 
     override fun getById(id: Long): Flow<Sale> {
-        return saleQueries.getById(id = id, mapper = ::mapToSale).asFlow().mapToOne(Dispatchers.IO)
+        return saleQueries.getById(id = id, mapper = ::mapToSale).asFlow().mapToOne(dispatcher)
     }
 
     override fun getAll(): Flow<List<Sale>> {
-        return saleQueries.getAll(mapper = ::mapToSale).asFlow().mapToList(Dispatchers.IO)
+        return saleQueries.getAll(mapper = ::mapToSale).asFlow().mapToList(dispatcher)
+    }
+
+    override fun getCustomerById(id: Long): Flow<List<Sale>> {
+        return saleQueries.getByCustomerId(id = id, mapper = ::mapToSale)
+            .asFlow().mapToList(dispatcher)
     }
 
     private fun mapToSale(

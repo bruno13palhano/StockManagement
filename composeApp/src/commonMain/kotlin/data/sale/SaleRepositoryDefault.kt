@@ -1,29 +1,30 @@
 package data.sale
 
-import data.Data
-import data.Repository
 import kotlinx.coroutines.flow.Flow
 import model.Sale
 
-class SaleRepository(private val data: Data<Sale>) : Repository<Sale> {
+class SaleRepositoryDefault(private val saleData: SaleData) : SaleRepository {
     override suspend fun insert(model: Sale) {
-        data.insert(model = model)
+        saleData.insert(model = model)
     }
 
     override suspend fun update(model: Sale) {
-        data.update(model = model)
+        saleData.update(model = model)
     }
 
     override suspend fun delete(id: Long) {
-        data.delete(id = id)
+        saleData.delete(id = id)
     }
 
     override fun getById(id: Long): Flow<Sale> {
-        return data.getById(id = id)
+        return saleData.getById(id = id)
     }
 
     override fun getAll(): Flow<List<Sale>> {
-        return data.getAll()
+        return saleData.getAll()
     }
 
+    override fun getByCustomerId(id: Long): Flow<List<Sale>> {
+        return saleData.getCustomerById(id = id)
+    }
 }
