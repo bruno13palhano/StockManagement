@@ -53,3 +53,10 @@ SELECT S.id, S.customerId, S.productName, C.name, S.purchasePrice, S.salePrice, 
     S.totalProfit, S.dateOfSale, S.dateOfPayment, S.dateOfShipping, S.dateOfDelivery, S.isPaid,
     S.delivered, S.canceled
 FROM Sale S INNER JOIN Customer C ON(S.customerId == C.id);
+
+getByCustomerId:
+SELECT S.id, S.customerId, S.productName, C.name, S.purchasePrice, S.salePrice, S.quantity,
+    S.deliveryPrice, S.amazonCode, S.sku, S.requestNumber, S.tax, S.amazonProfit, S.resaleProfit,
+    S.totalProfit, S.dateOfSale, S.dateOfPayment, S.dateOfShipping, S.dateOfDelivery, S.isPaid,
+    S.delivered, S.canceled
+FROM Sale S INNER JOIN Customer C ON(S.customerId == C.id) WHERE C.id = ?;
