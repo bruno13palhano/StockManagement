@@ -382,7 +382,7 @@ private fun SaleScreen(
                 label = stringResource(Res.string.request_number_label),
                 placeholder = stringResource(Res.string.enter_request_number_label)
             )
-            TextInputField(
+            IntegerInputField(
                 value = viewModel.tax,
                 onValueChange = viewModel::updateTax,
                 icon = Icons.Filled.Percent,
