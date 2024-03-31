@@ -3,7 +3,7 @@ package com.bruno13palhano
 import AppContainer
 import android.app.Application
 import data.customer.CustomerLocalData
-import data.customer.CustomerRepository
+import data.customer.CustomerRepositoryDefault
 import data.sale.SaleLocalData
 import data.sale.SaleRepository
 import data.sale.SaleRepositoryDefault
@@ -14,6 +14,6 @@ class AndroidAppContainer : Application(), AppContainer {
     override val saleRepository: SaleRepository =
         SaleRepositoryDefault(saleData = SaleLocalData(saleQueries = database.saleQueries))
 
-    override val customerRepository: CustomerRepository =
-        CustomerRepository(data = CustomerLocalData(customerQueries = database.customerQueries))
+    override val customerRepository: CustomerRepositoryDefault =
+        CustomerRepositoryDefault(customerData = CustomerLocalData(customerQueries = database.customerQueries))
 }

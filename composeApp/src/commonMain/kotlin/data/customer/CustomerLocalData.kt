@@ -4,7 +4,6 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOne
 import com.bruno13palhano.database.CustomerQueries
-import data.Data
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +13,7 @@ import model.Customer
 class CustomerLocalData(
     private val customerQueries: CustomerQueries,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-) : Data<Customer> {
+) : CustomerData {
     override suspend fun insert(model: Customer) =
         customerQueries.insert(
             name = model.name,
