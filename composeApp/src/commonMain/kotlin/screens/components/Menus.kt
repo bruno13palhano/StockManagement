@@ -15,6 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Insights
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
@@ -134,4 +136,27 @@ fun BottomSheet(
         sheetState = bottomSheetState,
         content = content
     )
+}
+
+@Composable
+fun MoreOptionsMenu(
+    items: Array<String>,
+    expanded: Boolean,
+    onDismissRequest: (expanded: Boolean) -> Unit,
+    onClick: (index: Int) -> Unit
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { onDismissRequest(false) }
+    ) {
+        items.forEachIndexed { index, item ->
+            DropdownMenuItem(
+                text = { Text(text = item) },
+                onClick = {
+                    onClick(index)
+                    onDismissRequest(false)
+                }
+            )
+        }
+    }
 }
