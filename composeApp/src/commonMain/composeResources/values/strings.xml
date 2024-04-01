@@ -53,4 +53,6 @@
     <string name="drawer_menu_label">Drawer menu</string>
     <string name="done_button_label">Done button</string>
     <string name="add_button_label">Add button</string>
+    <string name="save_label">Save</string>
+    <string name="cancel_label">Cancel</string>
 </resources>
