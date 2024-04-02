@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Numbers
 import androidx.compose.material.icons.filled.Paid
 import androidx.compose.material.icons.filled.Percent
@@ -54,6 +55,7 @@ import screens.components.BottomSheet
 import screens.components.ClickField
 import screens.components.FloatInputField
 import screens.components.IntegerInputField
+import screens.components.MoreOptionsMenu
 import screens.components.TextInputField
 import screens.currentDate
 import screens.dateFormat
@@ -265,6 +267,38 @@ private fun SaleScreen(
                             contentDescription = stringResource(Res.string.navigate_back_label)
                         )
                     }
+                },
+                actions = {
+                    var expanded by remember { mutableStateOf(false) }
+
+                    IconButton(onClick = { expanded = true }) {
+                        Icon(
+                            imageVector = Icons.Filled.MoreVert,
+                            contentDescription = null
+                        )
+
+                        val items = arrayOf(
+                            stringResource(Res.string.save_label),
+                            stringResource(Res.string.cancel_label)
+                        )
+                        MoreOptionsMenu(
+                            items = items,
+                            expanded = expanded,
+                            onDismissRequest = { expanded = it },
+                            onClick = { index ->
+                                when (index) {
+                                    SaleOptionsMenu.SAVE -> {
+                                        onBackClick()
+                                        viewModel.save(id = id)
+                                    }
+                                    SaleOptionsMenu.CANCEL -> {
+                                        onBackClick()
+                                        viewModel.cancelSale(id = id)
+                                    }
+                                }
+                            }
+                        )
+                    }
                 }
             )
         },
@@ -458,4 +492,9 @@ private fun SaleScreen(
             }
         }
     }
+}
+
+private object SaleOptionsMenu {
+    const val SAVE = 0
+    const val CANCEL = 1
 }
