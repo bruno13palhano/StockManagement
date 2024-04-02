@@ -275,7 +275,9 @@ private fun SaleScreen(
                         IconButton(onClick = { expanded = true }) {
                             Icon(
                                 imageVector = Icons.Filled.MoreVert,
-                                contentDescription = null
+                                contentDescription = stringResource(
+                                    Res.string.more_options_menu_label
+                                )
                             )
 
                             val items = arrayOf(
