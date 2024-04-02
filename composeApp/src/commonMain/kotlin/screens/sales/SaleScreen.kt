@@ -271,33 +271,36 @@ private fun SaleScreen(
                 actions = {
                     var expanded by remember { mutableStateOf(false) }
 
-                    IconButton(onClick = { expanded = true }) {
-                        Icon(
-                            imageVector = Icons.Filled.MoreVert,
-                            contentDescription = null
-                        )
+                    if (id != 0L) {
+                        IconButton(onClick = { expanded = true }) {
+                            Icon(
+                                imageVector = Icons.Filled.MoreVert,
+                                contentDescription = null
+                            )
 
-                        val items = arrayOf(
-                            stringResource(Res.string.save_label),
-                            stringResource(Res.string.cancel_label)
-                        )
-                        MoreOptionsMenu(
-                            items = items,
-                            expanded = expanded,
-                            onDismissRequest = { expanded = it },
-                            onClick = { index ->
-                                when (index) {
-                                    SaleOptionsMenu.SAVE -> {
-                                        onBackClick()
-                                        viewModel.save(id = id)
-                                    }
-                                    SaleOptionsMenu.CANCEL -> {
-                                        onBackClick()
-                                        viewModel.cancelSale(id = id)
+                            val items = arrayOf(
+                                stringResource(Res.string.save_label),
+                                stringResource(Res.string.cancel_label)
+                            )
+                            MoreOptionsMenu(
+                                items = items,
+                                expanded = expanded,
+                                onDismissRequest = { expanded = it },
+                                onClick = { index ->
+                                    when (index) {
+                                        SaleOptionsMenu.SAVE -> {
+                                            onBackClick()
+                                            viewModel.save(id = id)
+                                        }
+
+                                        SaleOptionsMenu.CANCEL -> {
+                                            onBackClick()
+                                            viewModel.cancelSale(id = id)
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             )
