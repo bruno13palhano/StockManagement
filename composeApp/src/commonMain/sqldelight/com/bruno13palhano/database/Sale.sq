@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS Sale (
     dateOfDelivery INTEGER NOT NULL,
     isPaid INTEGER AS Boolean NOT NULL,
     delivered INTEGER AS Boolean NOT NULL,
-    canceled INTEGER AS Boolean NOT NULL
+    canceled INTEGER AS Boolean NOT NULL,
+    FOREIGN KEY (customerId) REFERENCES Customer(id) ON DELETE CASCADE
 );
 
 insert:
