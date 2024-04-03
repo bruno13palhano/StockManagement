@@ -68,6 +68,12 @@ class CustomerViewModel(
         }
     }
 
+    fun delete(id: Long) {
+        CoroutineScope(SupervisorJob() + dispatcher).launch {
+            customerRepository.delete(id = id)
+        }
+    }
+
     private fun buildCustomer(
         id: Long = 0L
     ) = Customer(
