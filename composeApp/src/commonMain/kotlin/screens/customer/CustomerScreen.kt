@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Cake
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationCity
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Place
@@ -21,10 +22,15 @@ import androidx.compose.material.icons.filled.Title
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import screens.components.IntegerInputField
+import screens.components.MoreOptionsMenu
 import screens.components.TextInputField
 import stockmanagement.composeapp.generated.resources.Res
 
@@ -76,6 +82,41 @@ private fun CustomerScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(Res.string.navigate_back_label)
+                        )
+                    }
+                },
+                actions = {
+                    var expanded by remember { mutableStateOf(false) }
+
+                    IconButton(onClick = { expanded = true }) {
+                        Icon(
+                            imageVector = Icons.Filled.MoreVert,
+                            contentDescription = stringResource(
+                                Res.string.more_options_menu_label
+                            )
+                        )
+
+                        val items = arrayOf(
+                            stringResource(Res.string.save_label),
+                            stringResource(Res.string.delete_label)
+                        )
+
+                        MoreOptionsMenu(
+                            items = items,
+                            expanded = expanded,
+                            onDismissRequest = { expanded = it },
+                            onClick = { index ->
+                                when (index) {
+                                    CustomerOptionsMenu.SAVE -> {
+                                        viewModel.save(id = id)
+                                        onBackClick()
+                                    }
+                                    CustomerOptionsMenu.DELETE -> {
+                                        viewModel.delete(id = id)
+                                        onBackClick()
+                                    }
+                                }
+                            }
                         )
                     }
                 }
@@ -147,4 +188,9 @@ private fun CustomerScreen(
             )
         }
     }
+}
+
+private object CustomerOptionsMenu {
+    const val SAVE = 0
+    const val DELETE = 1
 }
