@@ -128,7 +128,7 @@ private fun CustomerScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    if (id == 0L) viewModel.save() else viewModel.save(id = id)
+                    viewModel.save(id = id)
                     onBackClick()
                 }
             ) {
