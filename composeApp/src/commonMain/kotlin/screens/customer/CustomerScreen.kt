@@ -88,36 +88,39 @@ private fun CustomerScreen(
                 actions = {
                     var expanded by remember { mutableStateOf(false) }
 
-                    IconButton(onClick = { expanded = true }) {
-                        Icon(
-                            imageVector = Icons.Filled.MoreVert,
-                            contentDescription = stringResource(
-                                Res.string.more_options_menu_label
+                    if (id != 0L) {
+                        IconButton(onClick = { expanded = true }) {
+                            Icon(
+                                imageVector = Icons.Filled.MoreVert,
+                                contentDescription = stringResource(
+                                    Res.string.more_options_menu_label
+                                )
                             )
-                        )
 
-                        val items = arrayOf(
-                            stringResource(Res.string.save_label),
-                            stringResource(Res.string.delete_label)
-                        )
+                            val items = arrayOf(
+                                stringResource(Res.string.save_label),
+                                stringResource(Res.string.delete_label)
+                            )
 
-                        MoreOptionsMenu(
-                            items = items,
-                            expanded = expanded,
-                            onDismissRequest = { expanded = it },
-                            onClick = { index ->
-                                when (index) {
-                                    CustomerOptionsMenu.SAVE -> {
-                                        viewModel.save(id = id)
-                                        onBackClick()
-                                    }
-                                    CustomerOptionsMenu.DELETE -> {
-                                        viewModel.delete(id = id)
-                                        onBackClick()
+                            MoreOptionsMenu(
+                                items = items,
+                                expanded = expanded,
+                                onDismissRequest = { expanded = it },
+                                onClick = { index ->
+                                    when (index) {
+                                        CustomerOptionsMenu.SAVE -> {
+                                            viewModel.save(id = id)
+                                            onBackClick()
+                                        }
+
+                                        CustomerOptionsMenu.DELETE -> {
+                                            viewModel.delete(id = id)
+                                            onBackClick()
+                                        }
                                     }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             )
