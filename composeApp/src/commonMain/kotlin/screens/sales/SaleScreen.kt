@@ -107,13 +107,13 @@ private fun SaleScreen(
     LaunchedEffect(key1 = Unit) { viewModel.getAllCustomers() }
 
     LaunchedEffect(key1 = Unit) {
-        if (id != 0L) {
-            viewModel.getSale(id = id)
-        } else {
+        if (isNewSale(id = id)) {
             viewModel.updateDateOfSale(currentDate)
             viewModel.updateDateOfPayment(currentDate)
             viewModel.updateDateOfShipping(currentDate)
             viewModel.updateDateOfDelivery(currentDate)
+        } else {
+            viewModel.getSale(id = id)
         }
     }
 
@@ -271,7 +271,7 @@ private fun SaleScreen(
                 actions = {
                     var expanded by remember { mutableStateOf(false) }
 
-                    if (id != 0L) {
+                    if (!isNewSale(id = id)) {
                         IconButton(onClick = { expanded = true }) {
                             Icon(
                                 imageVector = Icons.Filled.MoreVert,
@@ -498,6 +498,8 @@ private fun SaleScreen(
         }
     }
 }
+
+private fun isNewSale(id: Long) = id == 0L
 
 private object SaleOptionsMenu {
     const val SAVE = 0
