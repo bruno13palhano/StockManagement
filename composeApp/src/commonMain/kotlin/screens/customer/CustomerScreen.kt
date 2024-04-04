@@ -88,7 +88,7 @@ private fun CustomerScreen(
                 actions = {
                     var expanded by remember { mutableStateOf(false) }
 
-                    if (id != 0L) {
+                    if (!isNewCustomer(id = id)) {
                         IconButton(onClick = { expanded = true }) {
                             Icon(
                                 imageVector = Icons.Filled.MoreVert,
@@ -192,6 +192,8 @@ private fun CustomerScreen(
         }
     }
 }
+
+private fun isNewCustomer(id: Long) = id == 0L
 
 private object CustomerOptionsMenu {
     const val SAVE = 0
