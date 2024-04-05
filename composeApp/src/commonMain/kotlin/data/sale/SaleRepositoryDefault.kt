@@ -24,6 +24,10 @@ class SaleRepositoryDefault(private val saleData: SaleData) : SaleRepository {
         return saleData.getAll()
     }
 
+    override fun getSales(offset: Int, limit: Int): Flow<List<Sale>> {
+        TODO("Not yet implemented")
+    }
+
     override fun getByCustomerId(id: Long): Flow<List<Sale>> {
         return saleData.getCustomerById(id = id)
     }

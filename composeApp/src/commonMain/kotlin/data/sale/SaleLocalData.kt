@@ -76,6 +76,14 @@ class SaleLocalData(
         return saleQueries.getAll(mapper = ::mapToSale).asFlow().mapToList(dispatcher)
     }
 
+    override fun getSales(offset: Int, limit: Int): Flow<List<Sale>> {
+        return saleQueries.getSales(
+            offset = offset.toLong(),
+            limit = limit.toLong(),
+            mapper = ::mapToSale
+        ).asFlow().mapToList(dispatcher)
+    }
+
     override fun getCustomerById(id: Long): Flow<List<Sale>> {
         return saleQueries.getByCustomerId(id = id, mapper = ::mapToSale)
             .asFlow().mapToList(dispatcher)
