@@ -8,6 +8,7 @@ import screens.customer.CustomersViewModel
 import screens.customer.EditCustomerRoute
 import screens.customer.NewCustomerRoute
 import screens.financial.FinancialRoute
+import screens.financial.FinancialViewModel
 import screens.home.HomeRoute
 import screens.home.HomeViewModel
 import screens.sales.EditSaleRoute
@@ -62,7 +63,10 @@ fun MainNavigation(
                 }
             }
             composable(route = Route.FINANCIAL) {
-                FinancialRoute(onIconMenuClick = onIconMenuClick)
+                FinancialRoute(
+                    viewModel = FinancialViewModel(saleRepository = appContainer.saleRepository),
+                    onIconMenuClick = onIconMenuClick
+                )
             }
             composable(route = Route.CUSTOMERS) {
                 CustomersRoute(
