@@ -1,5 +1,4 @@
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -8,10 +7,11 @@ import kotlinx.coroutines.launch
 import navigation.MainNavigation
 import navigation.rememberNavController
 import screens.components.Menu
+import theme.StockManagementTheme
 
 @Composable
 fun App(appContainer: AppContainer) {
-    MaterialTheme {
+    StockManagementTheme {
         Surface {
             val drawerState = rememberDrawerState(DrawerValue.Closed)
             val navController = rememberNavController()
