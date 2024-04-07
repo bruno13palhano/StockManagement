@@ -1,13 +1,9 @@
 package theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.unit.dp
 
 private val DarkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
@@ -74,14 +70,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun StockManagementTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
-) {
-
-
+fun StockManagementTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = LightColorScheme,
         typography = Typography,
