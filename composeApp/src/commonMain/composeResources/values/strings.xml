@@ -3,6 +3,7 @@
     <string name="home_label">Home</string>
     <string name="financial_label">Financial</string>
     <string name="customers_label">Customers</string>
+    <string name="sales_label">Sales</string>
     <string name="edit_sale_label">Edit Sale</string>
     <string name="new_sale_label">New Sale</string>
     <string name="edit_customer_label">Edit Customer</string>
