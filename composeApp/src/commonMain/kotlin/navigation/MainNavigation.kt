@@ -43,8 +43,8 @@ fun MainNavigation(
                     onItemCLick = {  id ->
                         navController.navigate(route = "${Route.EDIT_SALE}/$id")
                     },
-                    onAddButtonClick = onIconMenuClick,
-                    onBackClick = { navController.navigate(route = Route.NEW_SALE) },
+                    onAddButtonClick = { navController.navigate(route = Route.NEW_SALE) },
+                    onBackClick = { navController.navigateUp() },
                     viewModel = SalesViewModel(saleRepository = appContainer.saleRepository)
                 )
             }
