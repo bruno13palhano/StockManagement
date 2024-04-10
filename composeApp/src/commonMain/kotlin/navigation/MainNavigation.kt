@@ -14,6 +14,8 @@ import screens.home.HomeViewModel
 import screens.sales.EditSaleRoute
 import screens.sales.NewSaleRoute
 import screens.sales.SaleViewModel
+import screens.sales.SalesRoute
+import screens.sales.SalesViewModel
 
 @Composable
 fun MainNavigation(
@@ -34,6 +36,16 @@ fun MainNavigation(
                     onIconMenuClick = onIconMenuClick,
                     onAddButtonClick = { navController.navigate(route = Route.NEW_SALE) },
                     viewModel = HomeViewModel(saleRepository = appContainer.saleRepository)
+                )
+            }
+            composable(route = Route.SALES) {
+                SalesRoute(
+                    onItemCLick = {  id ->
+                        navController.navigate(route = "${Route.EDIT_SALE}/$id")
+                    },
+                    onAddButtonClick = onIconMenuClick,
+                    onBackClick = { navController.navigate(route = Route.NEW_SALE) },
+                    viewModel = SalesViewModel(saleRepository = appContainer.saleRepository)
                 )
             }
             composable(route = Route.NEW_SALE) {
@@ -112,6 +124,7 @@ object Route {
     const val MAIN = "main_route"
     const val HOME = "home_route"
     const val FINANCIAL = "financial_route"
+    const val SALES = "sales_route"
     const val EDIT_SALE = "edit_sale_route"
     const val NEW_SALE = "new_sale_route"
     const val CUSTOMERS = "customers_route"
