@@ -1,17 +1,21 @@
 package screens.sales
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -20,14 +24,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import model.Sale
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import model.SaleInfo
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import stockmanagement.composeapp.generated.resources.Res
 
 @Composable
 fun SalesRoute(
-    onItemCLick: (id: Long) -> Unit,
+    onItemClick: (id: Long) -> Unit,
     onAddButtonClick: () -> Unit,
     onBackClick: () -> Unit,
     viewModel: SalesViewModel
@@ -38,7 +45,7 @@ fun SalesRoute(
 
     SalesScreen(
         sales = sales,
-        onItemCLick = onItemCLick,
+        onItemClick = onItemClick,
         onAddButtonClick = onAddButtonClick,
         onBackClick = onBackClick
     )
@@ -47,8 +54,8 @@ fun SalesRoute(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
 @Composable
 private fun SalesScreen(
-    sales: List<Sale>,
-    onItemCLick: (id: Long) -> Unit,
+    sales: List<SaleInfo>,
+    onItemClick: (id: Long) -> Unit,
     onAddButtonClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
@@ -75,12 +82,57 @@ private fun SalesScreen(
             }
         }
     ) {
-        LazyColumn(modifier = Modifier.padding(it)) {
+        LazyColumn(
+            modifier = Modifier.padding(it),
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)
+        ) {
             items(items = sales, key = { sale -> sale.id }) { sale ->
-                ListItem(
-                    modifier = Modifier.clickable { onItemCLick(sale.id) },
-                    headlineContent = { Text(text = sale.productName) }
-                )
+                ElevatedCard(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    shape = RoundedCornerShape(5),
+                    onClick = { onItemClick(sale.id) }
+                ) {
+                    val salePriceAndQuantity =
+                        (
+                            if (sale.quantity == 1) {
+                                stringResource(
+                                    Res.string.item_label,
+                                    sale.quantity,
+                                    sale.totalPrice
+                                )
+                            } else {
+                                stringResource(
+                                    Res.string.items_label,
+                                    sale.quantity,
+                                    sale.totalPrice
+                                )
+                            }
+                        ).toString()
+
+                    ListItem(
+                        headlineContent = {
+                            Text(
+                                text = sale.productName,
+                                style = MaterialTheme.typography.titleMedium,
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1
+                            )
+                            Text(
+                                text = salePriceAndQuantity,
+                                style = MaterialTheme.typography.bodyMedium,
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1
+                            )
+                            Text(
+                                text = sale.customerName,
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontStyle = FontStyle.Italic,
+                                overflow = TextOverflow.Ellipsis,
+                                maxLines = 1
+                            )
+                        }
+                    )
+                }
             }
         }
     }
