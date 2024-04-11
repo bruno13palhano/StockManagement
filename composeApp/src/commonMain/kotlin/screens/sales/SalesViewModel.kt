@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import model.Sale
+import model.SaleInfo
 
 class SalesViewModel(
     private val saleRepository: SaleRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
 ) {
-    private var _sales = MutableStateFlow(listOf<Sale>())
+    private var _sales = MutableStateFlow(listOf<SaleInfo>())
     val sales = _sales
         .stateIn(
             scope = CoroutineScope(SupervisorJob() + dispatcher),
@@ -26,7 +26,15 @@ class SalesViewModel(
     fun getSales() {
         CoroutineScope(SupervisorJob() + dispatcher).launch {
             saleRepository.getAll().collect {
-                _sales.value = it
+                _sales.value = it.map {  sale ->
+                    SaleInfo(
+                        id = sale.id,
+                        productName = sale.productName,
+                        customerName = sale.customerName,
+                        quantity = sale.quantity,
+                        totalPrice = (sale.salePrice * sale.quantity)
+                    )
+                }
             }
         }
     }
