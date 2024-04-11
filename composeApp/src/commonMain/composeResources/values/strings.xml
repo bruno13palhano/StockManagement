@@ -58,4 +58,6 @@
     <string name="save_label">Save</string>
     <string name="cancel_label">Cancel</string>
     <string name="delete_label">Delete</string>
+    <string name="item_label">%1$d Item, %2$s</string>
+    <string name="items_label">%1$d Items, %2$s</string>
 </resources>
