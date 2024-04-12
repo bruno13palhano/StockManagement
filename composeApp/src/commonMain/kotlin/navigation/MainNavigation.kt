@@ -30,17 +30,14 @@ fun MainNavigation(
         navigation(startDestination = Route.MAIN, route = Route.HOME) {
             composable(route = Route.HOME) {
                 HomeRoute(
-                    onItemClick =  { id ->
-                        navController.navigate(route = "${Route.EDIT_SALE}/$id")
-                    },
                     onIconMenuClick = onIconMenuClick,
-                    onAddButtonClick = { navController.navigate(route = Route.NEW_SALE) },
+                    onAddButtonClick = { navController.navigate(route = Route.SALES) },
                     viewModel = HomeViewModel(saleRepository = appContainer.saleRepository)
                 )
             }
             composable(route = Route.SALES) {
                 SalesRoute(
-                    onItemCLick = {  id ->
+                    onItemClick = { id ->
                         navController.navigate(route = "${Route.EDIT_SALE}/$id")
                     },
                     onAddButtonClick = { navController.navigate(route = Route.NEW_SALE) },
