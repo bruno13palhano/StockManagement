@@ -60,4 +60,6 @@
     <string name="delete_label">Delete</string>
     <string name="item_label">%1$d Item, R$%2$s</string>
     <string name="items_label">%1$d Items, R$%2$s</string>
+    <string name="amount_label">Amount %1$s</string>
+    <string name="profit_label">Profit %1$s</string>
 </resources>
