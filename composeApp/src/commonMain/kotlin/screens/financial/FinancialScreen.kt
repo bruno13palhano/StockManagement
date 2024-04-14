@@ -2,10 +2,10 @@ package screens.financial
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ListItem
@@ -37,12 +37,17 @@ fun FinancialRoute(
     onIconMenuClick: () -> Unit,
     viewModel: FinancialViewModel
 ) {
-    LaunchedEffect(key1 = Unit) { viewModel.getLastSales() }
+    LaunchedEffect(key1 = Unit) { viewModel.getData(); viewModel.getLastSales() }
 
     val lastSales by viewModel.lastSales.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     FinancialScreen(
         lastSales = lastSales,
+        amount = uiState.amount,
+        profit = uiState.profit,
+        biggestSale = uiState.biggestSale,
+        smallestSale = uiState.smallestSale,
         onIconMenuClick = onIconMenuClick
     )
 }
@@ -51,6 +56,10 @@ fun FinancialRoute(
 @Composable
 private fun FinancialScreen(
     lastSales: List<Sale>,
+    amount: Float,
+    profit:Float,
+    biggestSale:Float,
+    smallestSale: Float,
     onIconMenuClick: () -> Unit
 ) {
     Scaffold(
@@ -69,21 +78,75 @@ private fun FinancialScreen(
         }
     ) {
         Column(modifier = Modifier.padding(it)) {
-            LazyRow(
+            ElevatedCard(modifier = Modifier.padding(8.dp)) {
+                Row {
+                    Text(
+                        modifier = Modifier.padding(start = 24.dp, top = 8.dp),
+                        text = stringResource(Res.string.amount_label),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp, end = 24.dp),
+                        text = amount.toString(),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                Row {
+                    Text(
+                        modifier = Modifier.padding(start = 24.dp, top = 8.dp),
+                        text = stringResource(Res.string.profit_label),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp, end = 24.dp),
+                        text = profit.toString(),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                Row {
+                    Text(
+                        modifier = Modifier.padding(start = 24.dp, top = 8.dp),
+                        text = stringResource(Res.string.biggest_sale_label),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp, end = 24.dp),
+                        text = biggestSale.toString(),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                Row {
+                    Text(
+                        modifier = Modifier.padding(start = 24.dp, top = 8.dp, bottom = 8.dp),
+                        text = stringResource(Res.string.smallest_sale_label),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp, end = 24.dp, bottom = 8.dp),
+                        text = smallestSale.toString(),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+            LazyColumn (
                 modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
             ) {
                 items(items = lastSales, key = {sale -> sale.id} ) { sale ->
                     ElevatedCard(
-                        modifier = Modifier
-                            .padding(2.dp)
-                            .size(144.dp),
                         shape = RoundedCornerShape(5),
                         onClick = {}
                     ) {
                         ListItem(
-                            modifier = Modifier
-                                .padding(8.dp),
+                            modifier = Modifier.fillMaxWidth().padding(8.dp),
                             headlineContent = {
                                 Text(
                                     text = sale.productName,
