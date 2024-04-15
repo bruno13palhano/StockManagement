@@ -39,6 +39,7 @@ kotlin {
             implementation("app.cash.sqldelight:sqlite-driver:2.0.1")
             implementation("app.cash.sqldelight:coroutines-extensions:2.0.1")
             implementation(compose.material3)
+            implementation("io.github.thechance101:chart:Beta-0.0.5")
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
