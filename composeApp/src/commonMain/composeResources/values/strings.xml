@@ -64,4 +64,5 @@
     <string name="profit_label">Profit R$</string>
     <string name="biggest_sale_label">Biggest sale R$</string>
     <string name="smallest_sale_label">Smallest sale R$</string>
+    <string name="last_sales_label">Last Sales</string>
 </resources>
