@@ -61,8 +61,12 @@
     <string name="item_label">%1$d Item, R$%2$s</string>
     <string name="items_label">%1$d Items, R$%2$s</string>
     <string name="amount_label">Amount R$</string>
-    <string name="profit_label">Profit R$</string>
+    <string name="profit_tag">Profit R$</string>
+    <string name="profit_label">Profit</string>
     <string name="biggest_sale_label">Biggest sale R$</string>
     <string name="smallest_sale_label">Smallest sale R$</string>
     <string name="last_sales_label">Last Sales</string>
+    <string name="all_sales_label">All Sales</string>
+    <string name="paid_label">Paid</string>
+    <string name="not_paid_label">Not Paid</string>
 </resources>
