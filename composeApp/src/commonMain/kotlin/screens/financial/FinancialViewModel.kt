@@ -43,23 +43,27 @@ class FinancialViewModel(
     fun getData() {
         CoroutineScope(SupervisorJob() + dispatcher).launch {
             saleRepository.getAll().collect {
-                var amount = 0F
-                var profit = 0F
-                var biggestSale = Float.MIN_VALUE
-                var smallestSale = Float.MAX_VALUE
+                var amount = 0.0
+                var resaleProfit = 0.0
+                var amazonProfit = 0.0
+                var biggestSale = Double.MIN_VALUE
+                var smallestSale = Double.MAX_VALUE
 
                 it.forEach { sale ->
                     amount += (sale.salePrice * sale.quantity)
-                    profit += ((sale.salePrice * sale.quantity) - sale.deliveryPrice)
+                    resaleProfit += sale.resaleProfit
+                    amazonProfit += sale.amazonProfit
                     if (sale.salePrice >= biggestSale)
-                        biggestSale = sale.salePrice
+                        biggestSale = sale.salePrice.toDouble()
                     if (sale.salePrice <= smallestSale)
-                        smallestSale = sale.salePrice
+                        smallestSale = sale.salePrice.toDouble()
                 }
 
                 _uiState.value = FinancialUiState(
                     amount = amount,
-                    profit = profit,
+                    profit = amazonProfit + resaleProfit,
+                    resaleProfit = resaleProfit,
+                    amazonProfit = amazonProfit,
                     biggestSale = biggestSale,
                     smallestSale = smallestSale
                 )
@@ -68,9 +72,11 @@ class FinancialViewModel(
     }
 
     data class FinancialUiState(
-        val amount: Float = 0F,
-        val profit: Float = 0F,
-        val biggestSale: Float = 0F,
-        val smallestSale: Float = 0F
+        val amount: Double = 0.0,
+        val profit: Double = 0.0,
+        val resaleProfit: Double = 1.0,
+        val amazonProfit: Double = 0.0,
+        val biggestSale: Double = 0.0,
+        val smallestSale: Double = 0.0
     )
 }
