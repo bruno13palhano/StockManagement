@@ -72,12 +72,9 @@ class SaleViewModel(
 
     private val _totalProfit = combine(
         amazonProfit,
-        snapshotFlow { purchasePrice },
-        snapshotFlow { quantity },
         snapshotFlow { resaleProfit }
-    ) { aProfit, pPrice, qtd, rProfit ->
-        ((stringToFloat(aProfit) - (stringToFloat(pPrice) * stringToFloat(qtd)))
-                + stringToFloat(rProfit)).toString()
+    ) { aProfit, rProfit ->
+        (stringToFloat(aProfit) + stringToFloat(rProfit)).toString()
     }
 
     val totalProfit = _totalProfit
@@ -226,7 +223,8 @@ class SaleViewModel(
     private fun calcAmazonProfit(): String {
         return (if (salePrice.isNotEmpty()) {
             val totalAmazonPrice = (stringToFloat(salePrice) * stringToFloat(quantity))
-            totalAmazonPrice - ((stringToFloat(tax) * totalAmazonPrice) / 100)
+            (totalAmazonPrice - ((stringToFloat(tax) * totalAmazonPrice) / 100)) -
+                    stringToFloat(purchasePrice)
         } else 0F).toString()
     }
 }
