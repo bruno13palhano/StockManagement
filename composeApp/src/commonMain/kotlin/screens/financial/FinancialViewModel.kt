@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import model.Sale
 
 class FinancialViewModel(
     private val saleRepository: SaleRepository,
@@ -23,22 +22,21 @@ class FinancialViewModel(
             initialValue = FinancialUiState()
         )
 
-    private var _lastSales = MutableStateFlow(listOf<Sale>())
-
-    val lastSales = _lastSales
+    private var _showProfitChart = MutableStateFlow(false)
+    val showProfitChart = _showProfitChart
         .stateIn(
             scope = CoroutineScope(SupervisorJob() + dispatcher),
-            started = WhileSubscribed(),
-            initialValue = listOf()
+            started = WhileSubscribed(5_000),
+            initialValue = false
         )
 
-    fun getLastSales() {
-        CoroutineScope(SupervisorJob() + dispatcher).launch {
-            saleRepository.getSales(offset = 0, limit = 3).collect {
-                _lastSales.value = it
-            }
-        }
-    }
+    private var _showSalesChart = MutableStateFlow(false)
+    val showSalesChart = _showSalesChart
+        .stateIn(
+            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            started = WhileSubscribed(5_000),
+            initialValue = false
+        )
 
     fun getData() {
         CoroutineScope(SupervisorJob() + dispatcher).launch {
@@ -46,6 +44,8 @@ class FinancialViewModel(
                 var amount = 0.0
                 var resaleProfit = 0.0
                 var amazonProfit = 0.0
+                var paidSales = 0
+                var notPaidSales = 0
                 var biggestSale = Double.MIN_VALUE
                 var smallestSale = Double.MAX_VALUE
 
@@ -53,17 +53,29 @@ class FinancialViewModel(
                     amount += (sale.salePrice * sale.quantity)
                     resaleProfit += sale.resaleProfit
                     amazonProfit += sale.amazonProfit
+
                     if (sale.salePrice >= biggestSale)
                         biggestSale = sale.salePrice.toDouble()
+
                     if (sale.salePrice <= smallestSale)
                         smallestSale = sale.salePrice.toDouble()
+
+                    if (sale.isPaid) paidSales++ else notPaidSales++
                 }
+
+                if (paidSales != 0 || notPaidSales != 0)
+                    _showSalesChart.value = true
+
+                if (resaleProfit != 0.0 || amazonProfit != 0.0)
+                    _showProfitChart.value = true
 
                 _uiState.value = FinancialUiState(
                     amount = amount,
                     profit = amazonProfit + resaleProfit,
                     resaleProfit = resaleProfit,
                     amazonProfit = amazonProfit,
+                    paidSales = paidSales,
+                    notPaidSales = notPaidSales,
                     biggestSale = biggestSale,
                     smallestSale = smallestSale
                 )
@@ -76,6 +88,8 @@ class FinancialViewModel(
         val profit: Double = 0.0,
         val resaleProfit: Double = 1.0,
         val amazonProfit: Double = 0.0,
+        val paidSales: Int = 0,
+        val notPaidSales: Int = 1,
         val biggestSale: Double = 0.0,
         val smallestSale: Double = 0.0
     )
