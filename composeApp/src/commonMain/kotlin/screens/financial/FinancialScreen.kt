@@ -42,6 +42,7 @@ fun FinancialRoute(
     val uiState by viewModel.uiState.collectAsState()
     val showProfitChart by viewModel.showProfitChart.collectAsState()
     val showSalesChart by viewModel.showSalesChart.collectAsState()
+    val showCanceledChart by viewModel.showCanceledChart.collectAsState()
 
     FinancialScreen(
         amount = uiState.amount,
@@ -50,8 +51,11 @@ fun FinancialRoute(
         amazonProfit = uiState.amazonProfit,
         paidSales = uiState.paidSales,
         notPaidSales = uiState.notPaidSales,
+        doneSales = uiState.doneSales,
+        canceledSales = uiState.canceledSales,
         showProfitChart = showProfitChart,
         showSalesChart = showSalesChart,
+        showCanceledChart = showCanceledChart,
         biggestSale = uiState.biggestSale,
         smallestSale = uiState.smallestSale,
         onIconMenuClick = onIconMenuClick
@@ -67,8 +71,11 @@ private fun FinancialScreen(
     amazonProfit: Double,
     paidSales: Int,
     notPaidSales: Int,
+    doneSales: Int,
+    canceledSales: Int,
     showProfitChart: Boolean,
     showSalesChart: Boolean,
+    showCanceledChart: Boolean,
     biggestSale: Double,
     smallestSale: Double,
     onIconMenuClick: () -> Unit
@@ -205,6 +212,38 @@ private fun FinancialScreen(
                         ),
                     ),
                     centerTitle = stringResource(Res.string.profit_label)
+                )
+            }
+
+            if (showCanceledChart) {
+                Divider(modifier = Modifier.padding(8.dp).fillMaxWidth())
+
+                Text(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+                    text = stringResource(Res.string.done_vs_canceled_label),
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontStyle = FontStyle.Italic
+                )
+
+                DonutChart(
+                    modifier = Modifier
+                        .padding(start = 16.dp, top = 8.dp, end = 8.dp, bottom = 16.dp)
+                        .fillMaxWidth()
+                        .sizeIn(maxHeight = 400.dp),
+                    pieChartData = listOf(
+                        PieChartData(
+                            partName = stringResource(Res.string.done_label),
+                            data = doneSales.toDouble(),
+                            color = MaterialTheme.colorScheme.inversePrimary
+                        ),
+                        PieChartData(
+                            partName = stringResource(Res.string.canceled_label),
+                            data = canceledSales.toDouble(),
+                            color = MaterialTheme.colorScheme.inverseSurface
+                        ),
+                    ),
+                    centerTitle = stringResource(Res.string.sales_label)
                 )
             }
         }

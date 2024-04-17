@@ -38,6 +38,14 @@ class FinancialViewModel(
             initialValue = false
         )
 
+    private var _showCanceledChart = MutableStateFlow(false)
+    val showCanceledChart = _showCanceledChart
+        .stateIn(
+            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            started = WhileSubscribed(5_000),
+            initialValue = false
+        )
+
     fun getData() {
         CoroutineScope(SupervisorJob() + dispatcher).launch {
             saleRepository.getAll().collect {
@@ -46,6 +54,8 @@ class FinancialViewModel(
                 var amazonProfit = 0.0
                 var paidSales = 0
                 var notPaidSales = 0
+                var doneSales = 0
+                var canceledSales = 0
                 var biggestSale = Double.MIN_VALUE
                 var smallestSale = Double.MAX_VALUE
 
@@ -61,6 +71,8 @@ class FinancialViewModel(
                         smallestSale = sale.salePrice.toDouble()
 
                     if (sale.isPaid) paidSales++ else notPaidSales++
+
+                    if (sale.canceled) canceledSales++ else doneSales++
                 }
 
                 if (paidSales != 0 || notPaidSales != 0)
@@ -69,6 +81,9 @@ class FinancialViewModel(
                 if (resaleProfit != 0.0 || amazonProfit != 0.0)
                     _showProfitChart.value = true
 
+                if (doneSales != 0 || canceledSales != 0)
+                    _showCanceledChart.value = true
+
                 _uiState.value = FinancialUiState(
                     amount = amount,
                     profit = amazonProfit + resaleProfit,
@@ -76,6 +91,8 @@ class FinancialViewModel(
                     amazonProfit = amazonProfit,
                     paidSales = paidSales,
                     notPaidSales = notPaidSales,
+                    doneSales = doneSales,
+                    canceledSales = canceledSales,
                     biggestSale = biggestSale,
                     smallestSale = smallestSale
                 )
@@ -90,6 +107,8 @@ class FinancialViewModel(
         val amazonProfit: Double = 0.0,
         val paidSales: Int = 0,
         val notPaidSales: Int = 1,
+        val doneSales: Int = 1,
+        val canceledSales: Int = 0,
         val biggestSale: Double = 0.0,
         val smallestSale: Double = 0.0
     )
