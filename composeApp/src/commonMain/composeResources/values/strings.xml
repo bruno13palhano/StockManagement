@@ -69,4 +69,6 @@
     <string name="all_sales_label">All Sales</string>
     <string name="paid_label">Paid</string>
     <string name="not_paid_label">Not Paid</string>
+    <string name="resale_label">Resale</string>
+    <string name="amazon_label">Amazon</string>
 </resources>
