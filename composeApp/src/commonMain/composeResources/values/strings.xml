@@ -71,4 +71,7 @@
     <string name="not_paid_label">Not Paid</string>
     <string name="resale_label">Resale</string>
     <string name="amazon_label">Amazon</string>
+    <string name="done_label">Done</string>
+    <string name="canceled_label">Canceled</string>
+    <string name="done_vs_canceled_label">Done vs Canceled</string>
 </resources>
