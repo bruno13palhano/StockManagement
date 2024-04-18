@@ -74,4 +74,6 @@
     <string name="done_label">Done</string>
     <string name="canceled_label">Canceled</string>
     <string name="done_vs_canceled_label">Done vs Canceled</string>
+    <string name="double_description_tag">%1$s, %2$s</string>
+    <string name="phone_number_tag">Phone number %1$s</string>
 </resources>
