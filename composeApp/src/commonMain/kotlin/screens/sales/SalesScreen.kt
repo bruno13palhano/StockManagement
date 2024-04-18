@@ -24,7 +24,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import model.SaleInfo
@@ -120,14 +119,12 @@ private fun SalesScreen(
                             Text(
                                 text = salePriceAndQuantity,
                                 style = MaterialTheme.typography.bodyMedium,
-                                fontStyle = FontStyle.Italic,
                                 overflow = TextOverflow.Ellipsis,
                                 maxLines = 1
                             )
                             Text(
                                 text = sale.customerName,
                                 style = MaterialTheme.typography.bodyMedium,
-                                fontStyle = FontStyle.Italic,
                                 overflow = TextOverflow.Ellipsis,
                                 maxLines = 1
                             )
