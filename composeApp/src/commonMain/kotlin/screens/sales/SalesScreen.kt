@@ -120,6 +120,7 @@ private fun SalesScreen(
                             Text(
                                 text = salePriceAndQuantity,
                                 style = MaterialTheme.typography.bodyMedium,
+                                fontStyle = FontStyle.Italic,
                                 overflow = TextOverflow.Ellipsis,
                                 maxLines = 1
                             )
