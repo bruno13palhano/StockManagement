@@ -4,7 +4,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.composeMultiplatform)
     id("app.cash.sqldelight") version "2.0.1"
 }
 
@@ -40,6 +40,8 @@ kotlin {
             implementation("app.cash.sqldelight:coroutines-extensions:2.0.1")
             implementation(compose.material3)
             implementation("io.github.thechance101:chart:Beta-0.0.5")
+            implementation(libs.androidx.lifecycle.viewmodel.compose)
+            implementation(libs.androidx.navigation.compose)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
