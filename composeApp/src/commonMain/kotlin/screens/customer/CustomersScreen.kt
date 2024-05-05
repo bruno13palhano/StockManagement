@@ -27,9 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import model.Customer
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
-import stockmanagement.composeapp.generated.resources.Res
+import stockmanagement.composeapp.generated.resources.*
 
 @Composable
 fun CustomersRoute(
@@ -50,7 +49,7 @@ fun CustomersRoute(
     )
 }
 
-@OptIn(ExperimentalResourceApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CustomersScreen(
     customers: List<Customer>,

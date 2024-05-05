@@ -27,14 +27,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import screens.components.IntegerInputField
 import screens.components.MoreOptionsMenu
 import screens.components.TextInputField
-import stockmanagement.composeapp.generated.resources.Res
+import stockmanagement.composeapp.generated.resources.*
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun NewCustomerRoute(
     onBackClick: () -> Unit,
@@ -48,7 +46,6 @@ fun NewCustomerRoute(
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun EditCustomerRoute(
     id: Long,
@@ -65,7 +62,7 @@ fun EditCustomerRoute(
     )
 }
 
-@OptIn(ExperimentalResourceApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CustomerScreen(
     title: String,

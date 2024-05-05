@@ -28,9 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.aay.compose.donutChart.DonutChart
 import com.aay.compose.donutChart.model.PieChartData
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
-import stockmanagement.composeapp.generated.resources.Res
+import stockmanagement.composeapp.generated.resources.*
 
 @Composable
 fun FinancialRoute(
@@ -62,7 +61,7 @@ fun FinancialRoute(
     )
 }
 
-@OptIn(ExperimentalResourceApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun FinancialScreen(
     amount: Double,

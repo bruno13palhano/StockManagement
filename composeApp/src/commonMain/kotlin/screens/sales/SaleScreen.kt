@@ -49,7 +49,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import screens.components.BottomSheet
 import screens.components.ClickField
@@ -59,9 +58,8 @@ import screens.components.MoreOptionsMenu
 import screens.components.TextInputField
 import screens.currentDate
 import screens.dateFormat
-import stockmanagement.composeapp.generated.resources.Res
+import stockmanagement.composeapp.generated.resources.*
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun NewSaleRoute(
     onDoneButtonClick: () -> Unit,
@@ -77,7 +75,6 @@ fun NewSaleRoute(
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun EditSaleRoute(
     id: Long,
@@ -94,7 +91,7 @@ fun EditSaleRoute(
     )
 }
 
-@OptIn(ExperimentalResourceApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SaleScreen(
     id: Long,
