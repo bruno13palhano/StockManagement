@@ -1,11 +1,10 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
-    id("app.cash.sqldelight") version "2.0.1"
+    alias(libs.plugins.sqldelight)
 }
 
 kotlin {
@@ -27,7 +26,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
-            implementation("app.cash.sqldelight:android-driver:2.0.1")
+            implementation(libs.android.driver)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -36,8 +35,8 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation("androidx.compose.material:material-icons-extended:1.6.3")
-            implementation("app.cash.sqldelight:sqlite-driver:2.0.1")
-            implementation("app.cash.sqldelight:coroutines-extensions:2.0.1")
+            implementation(libs.runtime)
+            implementation(libs.coroutines.extensions)
             implementation(compose.material3)
             implementation("io.github.thechance101:chart:Beta-0.0.5")
             implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -45,7 +44,7 @@ kotlin {
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
-            implementation("app.cash.sqldelight:sqlite-driver:2.0.1")
+            implementation(libs.sqlite.driver)
         }
     }
 }
