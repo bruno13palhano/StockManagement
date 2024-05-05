@@ -3,9 +3,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
-import navigation.MainNavigation
-import navigation.rememberNavController
+import navigation.AppNavGraph
 import screens.components.Menu
 import theme.StockManagementTheme
 
@@ -18,7 +18,7 @@ fun App(appContainer: AppContainer) {
             val scope = rememberCoroutineScope()
 
             Menu(drawerState, navController) {
-                MainNavigation(
+                AppNavGraph(
                     onIconMenuClick = {
                         scope.launch {
                             if (drawerState.isClosed)
@@ -26,7 +26,7 @@ fun App(appContainer: AppContainer) {
                         }
                     },
                     appContainer = appContainer,
-                    navController = navController
+                    navController = navController,
                 )
             }
         }

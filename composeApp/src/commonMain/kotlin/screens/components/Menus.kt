@@ -25,29 +25,31 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import kotlinx.coroutines.launch
-import navigation.NavController
 import navigation.Route
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import stockmanagement.composeapp.generated.resources.Res
+import stockmanagement.composeapp.generated.resources.*
 
-@OptIn(ExperimentalResourceApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Menu(
     drawerState: DrawerState,
-    navController: NavController,
+    navController: NavHostController,
     content: @Composable () -> Unit
 ) {
     val menuItems = listOf(
@@ -56,8 +58,9 @@ fun Menu(
         MenuScreen.Customers
     )
 
-    val navBackStackEntry by remember { mutableStateOf(navController.navBackStackEntry.navigationStack) }
-    val currentItem by navController.currentRoute().collectAsState(initial = Route.HOME)
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentItem = navBackStackEntry?.destination
+    var selectedItem by remember { mutableStateOf(menuItems[0]) }
     val scope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
@@ -82,10 +85,17 @@ fun Menu(
                             shape = RoundedCornerShape(0, 50, 50, 0),
                             icon = { Icon(imageVector = item.icon, contentDescription = null) },
                             label = { Text(stringResource(item.resourceId)) },
-                            selected = item.route == currentItem,
+                            selected = currentItem?.hierarchy?.any { destination ->
+                                destination.route == item.route
+                            } == true,
                             onClick = {
-                                if (navBackStackEntry.lastOrNull() != item.route) {
-                                    navController.navigate(route = item.route)
+                                selectedItem = item
+                                navController.navigate(route = item.route) {
+                                    popUpTo(navController.graph.findStartDestination().navigatorName) {
+                                        saveState = true
+                                    }
+                                    restoreState = true
+                                    launchSingleTop = true
                                 }
                                 scope.launch {
                                     drawerState.close()
@@ -103,7 +113,6 @@ fun Menu(
     )
 }
 
-@OptIn(ExperimentalResourceApi::class)
 sealed class MenuScreen(val route: String, val icon: ImageVector, val resourceId: StringResource) {
     data object Home: MenuScreen(
         route = Route.HOME,
