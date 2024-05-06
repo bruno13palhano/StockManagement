@@ -1,30 +1,24 @@
 package screens.home
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import data.sale.SaleRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
-    private val saleRepository: SaleRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) : ViewModel() {
+class HomeViewModel(private val saleRepository: SaleRepository) : ViewModel() {
     private var _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState
         .stateIn(
-            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            scope = viewModelScope,
             started = WhileSubscribed(5_000),
             initialValue = HomeUiState()
         )
 
     fun getData() {
-        CoroutineScope(SupervisorJob() + dispatcher).launch {
+        viewModelScope.launch {
             saleRepository.getAll().collect {
                 var currentAmount = 0F
                 var currentProfit = 0F

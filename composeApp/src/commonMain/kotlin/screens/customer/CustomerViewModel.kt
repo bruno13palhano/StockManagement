@@ -4,18 +4,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import data.customer.CustomerRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import model.Customer
 
-class CustomerViewModel(
-    private val customerRepository: CustomerRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) : ViewModel() {
+class CustomerViewModel(private val customerRepository: CustomerRepository) : ViewModel() {
     var name by mutableStateOf("")
         private set
     var email by mutableStateOf("")
@@ -46,7 +40,7 @@ class CustomerViewModel(
     fun updateAge(age: String) { this.age = age }
 
     fun getCustomer(id: Long) {
-        CoroutineScope(SupervisorJob() + dispatcher).launch {
+        viewModelScope.launch {
             customerRepository.getById(id = id).collect {
                 name = it.name
                 email = it.email
@@ -60,7 +54,7 @@ class CustomerViewModel(
     }
 
     fun save(id: Long = 0L) {
-        CoroutineScope(SupervisorJob() + dispatcher).launch {
+        viewModelScope.launch {
             if (id == 0L) {
                 customerRepository.insert(model = buildCustomer())
             } else {
@@ -70,7 +64,7 @@ class CustomerViewModel(
     }
 
     fun delete(id: Long) {
-        CoroutineScope(SupervisorJob() + dispatcher).launch {
+        viewModelScope.launch {
             customerRepository.delete(id = id)
         }
     }

@@ -1,24 +1,18 @@
 package screens.financial
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import data.sale.SaleRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class FinancialViewModel(
-    private val saleRepository: SaleRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) : ViewModel() {
+class FinancialViewModel(private val saleRepository: SaleRepository) : ViewModel() {
     private var _uiState = MutableStateFlow(FinancialUiState())
     val uiState = _uiState
         .stateIn(
-            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            scope = viewModelScope,
             started = WhileSubscribed(5_000),
             initialValue = FinancialUiState()
         )
@@ -26,7 +20,7 @@ class FinancialViewModel(
     private var _showProfitChart = MutableStateFlow(false)
     val showProfitChart = _showProfitChart
         .stateIn(
-            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            scope = viewModelScope,
             started = WhileSubscribed(5_000),
             initialValue = false
         )
@@ -34,7 +28,7 @@ class FinancialViewModel(
     private var _showSalesChart = MutableStateFlow(false)
     val showSalesChart = _showSalesChart
         .stateIn(
-            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            scope = viewModelScope,
             started = WhileSubscribed(5_000),
             initialValue = false
         )
@@ -42,13 +36,13 @@ class FinancialViewModel(
     private var _showCanceledChart = MutableStateFlow(false)
     val showCanceledChart = _showCanceledChart
         .stateIn(
-            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            scope = viewModelScope,
             started = WhileSubscribed(5_000),
             initialValue = false
         )
 
     fun getData() {
-        CoroutineScope(SupervisorJob() + dispatcher).launch {
+        viewModelScope.launch {
             saleRepository.getAll().collect {
                 var amount = 0.0
                 var resaleProfit = 0.0

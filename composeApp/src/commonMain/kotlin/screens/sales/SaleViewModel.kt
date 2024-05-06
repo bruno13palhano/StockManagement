@@ -6,12 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import data.customer.CustomerRepository
 import data.sale.SaleRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -20,8 +17,7 @@ import model.Sale
 
 class SaleViewModel(
     private val saleRepository: SaleRepository,
-    private val customerRepository: CustomerRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
+    private val customerRepository: CustomerRepository
 ) : ViewModel() {
     private var customerId = 0L
     private var canceled = false
@@ -66,7 +62,7 @@ class SaleViewModel(
     private val _amazonProfit = snapshotFlow { calcAmazonProfit() }
     val amazonProfit = _amazonProfit
         .stateIn(
-            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            scope = viewModelScope,
             started = WhileSubscribed(5_000),
             initialValue = ""
         )
@@ -80,7 +76,7 @@ class SaleViewModel(
 
     val totalProfit = _totalProfit
         .stateIn(
-            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            scope = viewModelScope,
             started = WhileSubscribed(5_000),
             initialValue = ""
         )
@@ -130,7 +126,7 @@ class SaleViewModel(
     }
 
     fun getSale(id: Long) {
-        CoroutineScope(SupervisorJob() + dispatcher).launch {
+        viewModelScope.launch {
             saleRepository.getById(id = id).collect {
                 customerId = it.customerId
                 productName = it.productName
@@ -166,7 +162,7 @@ class SaleViewModel(
     }
 
     fun getAllCustomers() {
-        CoroutineScope(SupervisorJob() + dispatcher).launch {
+        viewModelScope.launch {
             customerRepository.getAll().collect {
                 allCustomers = it.map { customer ->
                     CustomerCheck(
@@ -185,7 +181,7 @@ class SaleViewModel(
     }
 
     fun save(id: Long) {
-        CoroutineScope(SupervisorJob() + dispatcher).launch {
+        viewModelScope.launch {
             if (id == 0L) {
                 saleRepository.insert(model = buildSale())
             } else {

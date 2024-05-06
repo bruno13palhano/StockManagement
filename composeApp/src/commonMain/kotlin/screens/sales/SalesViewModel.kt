@@ -1,31 +1,25 @@
 package screens.sales
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import data.sale.SaleRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import model.SaleInfo
 
-class SalesViewModel(
-    private val saleRepository: SaleRepository,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) : ViewModel() {
+class SalesViewModel(private val saleRepository: SaleRepository) : ViewModel() {
     private var _sales = MutableStateFlow(listOf<SaleInfo>())
     val sales = _sales
         .stateIn(
-            scope = CoroutineScope(SupervisorJob() + dispatcher),
+            scope = viewModelScope,
             started = WhileSubscribed(5_000),
             initialValue = emptyList()
         )
 
     fun getSales() {
-        CoroutineScope(SupervisorJob() + dispatcher).launch {
+        viewModelScope.launch {
             saleRepository.getAll().collect {
                 _sales.value = it.map {  sale ->
                     SaleInfo(
