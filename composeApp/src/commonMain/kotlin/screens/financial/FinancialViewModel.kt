@@ -1,5 +1,6 @@
 package screens.financial
 
+import androidx.lifecycle.ViewModel
 import data.sale.SaleRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
 class FinancialViewModel(
     private val saleRepository: SaleRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) {
+) : ViewModel() {
     private var _uiState = MutableStateFlow(FinancialUiState())
     val uiState = _uiState
         .stateIn(

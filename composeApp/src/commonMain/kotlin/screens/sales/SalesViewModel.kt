@@ -1,5 +1,6 @@
 package screens.sales
 
+import androidx.lifecycle.ViewModel
 import data.sale.SaleRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +15,7 @@ import model.SaleInfo
 class SalesViewModel(
     private val saleRepository: SaleRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) {
+) : ViewModel() {
     private var _sales = MutableStateFlow(listOf<SaleInfo>())
     val sales = _sales
         .stateIn(

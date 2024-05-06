@@ -3,6 +3,7 @@ package navigation
 import AppContainer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavType
@@ -45,7 +46,9 @@ fun AppNavGraph(
                 HomeRoute(
                     onIconMenuClick = onIconMenuClick,
                     onAddButtonClick = { navController.navigate(route = Route.SALES) },
-                    viewModel = HomeViewModel(saleRepository = appContainer.saleRepository)
+                    viewModel = viewModel {
+                        HomeViewModel(saleRepository = appContainer.saleRepository)
+                    }
                 )
             }
             composable(route = Route.SALES) {
@@ -55,17 +58,21 @@ fun AppNavGraph(
                     },
                     onAddButtonClick = { navController.navigate(route = Route.NEW_SALE) },
                     onBackClick = { navController.navigateUp() },
-                    viewModel = SalesViewModel(saleRepository = appContainer.saleRepository)
+                    viewModel = viewModel {
+                        SalesViewModel(saleRepository = appContainer.saleRepository)
+                    }
                 )
             }
             composable(route = Route.NEW_SALE) {
                 NewSaleRoute(
                     onDoneButtonClick = { navController.navigateUp() },
                     onBackClick = { navController.navigateUp() },
-                    viewModel = SaleViewModel(
-                        saleRepository = appContainer.saleRepository,
-                        customerRepository = appContainer.customerRepository
-                    )
+                    viewModel = viewModel {
+                        SaleViewModel(
+                            saleRepository = appContainer.saleRepository,
+                            customerRepository = appContainer.customerRepository
+                        )
+                    }
                 )
             }
             composable(
@@ -77,16 +84,20 @@ fun AppNavGraph(
                         id = id,
                         onDoneButtonClick = { navController.navigateUp() },
                         onBackClick = { navController.navigateUp() },
-                        viewModel = SaleViewModel(
-                            saleRepository = appContainer.saleRepository,
-                            customerRepository = appContainer.customerRepository
-                        )
+                        viewModel = viewModel {
+                            SaleViewModel(
+                                saleRepository = appContainer.saleRepository,
+                                customerRepository = appContainer.customerRepository
+                            )
+                        }
                     )
                 }
             }
             composable(route = Route.FINANCIAL) {
                 FinancialRoute(
-                    viewModel = FinancialViewModel(saleRepository = appContainer.saleRepository),
+                    viewModel = viewModel {
+                        FinancialViewModel(saleRepository = appContainer.saleRepository)
+                    },
                     onIconMenuClick = onIconMenuClick
                 )
             }
@@ -97,17 +108,21 @@ fun AppNavGraph(
                     },
                     onIconMenuClick = onIconMenuClick,
                     onAddButtonClick = { navController.navigate(route = Route.NEW_CUSTOMER) },
-                    viewModel = CustomersViewModel(
-                        customerRepository = appContainer.customerRepository
-                    )
+                    viewModel = viewModel {
+                        CustomersViewModel(
+                            customerRepository = appContainer.customerRepository
+                        )
+                    }
                 )
             }
             composable(route = Route.NEW_CUSTOMER) {
                 NewCustomerRoute(
                     onBackClick = { navController.navigateUp() },
-                    viewModel = CustomerViewModel(
-                        customerRepository = appContainer.customerRepository
-                    )
+                    viewModel = viewModel {
+                        CustomerViewModel(
+                            customerRepository = appContainer.customerRepository
+                        )
+                    }
                 )
             }
             composable(
@@ -118,9 +133,11 @@ fun AppNavGraph(
                     EditCustomerRoute(
                         id = id,
                         onBackClick = { navController.navigateUp() },
-                        viewModel = CustomerViewModel(
-                            customerRepository = appContainer.customerRepository
-                        )
+                        viewModel = viewModel {
+                            CustomerViewModel(
+                                customerRepository = appContainer.customerRepository
+                            )
+                        }
                     )
                 }
             }

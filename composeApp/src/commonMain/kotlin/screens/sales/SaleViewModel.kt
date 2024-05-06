@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.lifecycle.ViewModel
 import data.customer.CustomerRepository
 import data.sale.SaleRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,7 +22,7 @@ class SaleViewModel(
     private val saleRepository: SaleRepository,
     private val customerRepository: CustomerRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) {
+) : ViewModel() {
     private var customerId = 0L
     private var canceled = false
 

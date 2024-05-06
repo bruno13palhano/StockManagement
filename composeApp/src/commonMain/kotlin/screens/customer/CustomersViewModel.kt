@@ -1,5 +1,6 @@
 package screens.customer
 
+import androidx.lifecycle.ViewModel
 import data.customer.CustomerRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +15,7 @@ import model.Customer
 class CustomersViewModel(
     private val customerRepository: CustomerRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) {
+) : ViewModel() {
     private var _customers = MutableStateFlow(listOf<Customer>())
     val customers = _customers
         .stateIn(

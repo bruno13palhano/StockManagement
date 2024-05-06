@@ -3,6 +3,7 @@ package screens.customer
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 import data.customer.CustomerRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +15,7 @@ import model.Customer
 class CustomerViewModel(
     private val customerRepository: CustomerRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.Default
-) {
+) : ViewModel() {
     var name by mutableStateOf("")
         private set
     var email by mutableStateOf("")
