@@ -1,8 +1,9 @@
 [versions]
-agp = "8.2.0"
+agp = "8.2.2"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
+chart = "Beta-0.0.5"
 compose-multiplatform = "1.6.10-beta02"
 androidx-activityCompose = "1.9.0"
 androidx-appcompat = "1.6.1"
@@ -14,6 +15,7 @@ androidx-test-junit = "1.1.5"
 compose = "1.6.7"
 compose-compiler = "1.5.6"
 compose-plugin = "1.6.0-beta01"
+materialIconsExtended = "1.6.7"
 sqlDelight = "2.0.1"
 androidx-lifecycle = "2.8.0-beta02"
 androidx-navigation = "2.8.0-alpha02"
@@ -21,6 +23,8 @@ junit = "4.13.2"
 kotlin = "1.9.21"
 
 [libraries]
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+chart = { module = "io.github.thechance101:chart", version.ref = "chart" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

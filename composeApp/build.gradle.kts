@@ -8,8 +8,6 @@ plugins {
 }
 
 kotlin {
-    val sqlDelightVersion = "2.0.1"
-
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -34,11 +32,11 @@ kotlin {
             implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
-            implementation("androidx.compose.material:material-icons-extended:1.6.3")
+            implementation(libs.androidx.material.icons.extended)
             implementation(libs.runtime)
             implementation(libs.coroutines.extensions)
             implementation(compose.material3)
-            implementation("io.github.thechance101:chart:Beta-0.0.5")
+            implementation(libs.chart)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
             implementation(libs.androidx.navigation.compose)
         }
