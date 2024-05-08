@@ -60,7 +60,7 @@ private fun SalesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(Res.string.sales_label)) },
+                title = { Text(text = stringResource(Res.string.home_label)) },
                 navigationIcon = {
                     IconButton(onClick = onIconMenuClick) {
                         Icon(
