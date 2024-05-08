@@ -115,7 +115,7 @@ fun Menu(
 
 sealed class MenuScreen(val route: String, val icon: ImageVector, val resourceId: StringResource) {
     data object Home: MenuScreen(
-        route = Route.HOME,
+        route = Route.SALES,
         icon = Icons.Filled.Home,
         resourceId = Res.string.home_label
     )

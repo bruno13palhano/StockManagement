@@ -17,8 +17,6 @@ import screens.customer.EditCustomerRoute
 import screens.customer.NewCustomerRoute
 import screens.financial.FinancialRoute
 import screens.financial.FinancialViewModel
-import screens.home.HomeRoute
-import screens.home.HomeViewModel
 import screens.sales.EditSaleRoute
 import screens.sales.NewSaleRoute
 import screens.sales.SaleViewModel
@@ -39,25 +37,16 @@ fun AppNavGraph(
         modifier = modifier
     ) {
         navigation(
-            startDestination = Route.HOME,
+            startDestination = Route.SALES,
             route = Route.MAIN
         ) {
-            composable(route = Route.HOME) {
-                HomeRoute(
-                    onIconMenuClick = onIconMenuClick,
-                    onAddButtonClick = { navController.navigate(route = Route.SALES) },
-                    viewModel = viewModel {
-                        HomeViewModel(saleRepository = appContainer.saleRepository)
-                    }
-                )
-            }
             composable(route = Route.SALES) {
                 SalesRoute(
                     onItemClick = { id ->
                         navController.navigate(route = "${Route.EDIT_SALE}/$id")
                     },
                     onAddButtonClick = { navController.navigate(route = Route.NEW_SALE) },
-                    onBackClick = { navController.navigateUp() },
+                    onIconMenuClick = onIconMenuClick,
                     viewModel = viewModel {
                         SalesViewModel(saleRepository = appContainer.saleRepository)
                     }
@@ -149,7 +138,6 @@ private const val ITEM_ID = "item_id"
 
 object Route {
     const val MAIN = "main_route"
-    const val HOME = "home_route"
     const val FINANCIAL = "financial_route"
     const val SALES = "sales_route"
     const val EDIT_SALE = "edit_sale_route"

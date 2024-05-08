@@ -7,8 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -34,7 +34,7 @@ import stockmanagement.composeapp.generated.resources.*
 fun SalesRoute(
     onItemClick: (id: Long) -> Unit,
     onAddButtonClick: () -> Unit,
-    onBackClick: () -> Unit,
+    onIconMenuClick: () -> Unit,
     viewModel: SalesViewModel
 ) {
     val sales by viewModel.sales.collectAsState()
@@ -45,7 +45,7 @@ fun SalesRoute(
         sales = sales,
         onItemClick = onItemClick,
         onAddButtonClick = onAddButtonClick,
-        onBackClick = onBackClick
+        onIconMenuClick = onIconMenuClick
     )
 }
 
@@ -55,17 +55,17 @@ private fun SalesScreen(
     sales: List<SaleInfo>,
     onItemClick: (id: Long) -> Unit,
     onAddButtonClick: () -> Unit,
-    onBackClick: () -> Unit
+    onIconMenuClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(Res.string.sales_label)) },
                 navigationIcon = {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(onClick = onIconMenuClick) {
                         Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(Res.string.navigate_back_label)
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = stringResource(Res.string.drawer_menu_label)
                         )
                     }
                 }
