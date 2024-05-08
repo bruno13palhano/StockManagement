@@ -14,9 +14,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -151,7 +151,7 @@ private fun FinancialScreen(
             }
 
             if (showSalesChart) {
-                Divider(modifier = Modifier.padding(8.dp).fillMaxWidth())
+                HorizontalDivider(modifier = Modifier.padding(8.dp).fillMaxWidth())
 
                 Text(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
@@ -183,7 +183,7 @@ private fun FinancialScreen(
             }
 
             if (showProfitChart) {
-                Divider(modifier = Modifier.padding(8.dp).fillMaxWidth())
+                HorizontalDivider(modifier = Modifier.padding(8.dp).fillMaxWidth())
 
                 Text(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
@@ -215,7 +215,7 @@ private fun FinancialScreen(
             }
 
             if (showCanceledChart) {
-                Divider(modifier = Modifier.padding(8.dp).fillMaxWidth())
+                HorizontalDivider(modifier = Modifier.padding(8.dp).fillMaxWidth())
 
                 Text(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
