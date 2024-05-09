@@ -228,7 +228,10 @@ class SaleViewModel(
 
 private fun stringToInt(value: String) = try { value.toInt() } catch(e: Exception) { 0 }
 private fun stringToLong(value: String) = try { value.toLong() } catch (e: Exception) { 0L }
-private fun stringToFloat(value: String) = try {  value.toFloat() } catch (e: Exception) { 0F }
+private fun stringToFloat(value: String) = try {
+    val newValue = value.replace(",", ".")
+    newValue.toFloat()
+} catch (e: Exception) { 0F }
 
 data class CustomerCheck(
     var id: Long,
